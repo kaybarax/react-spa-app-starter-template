@@ -39,6 +39,7 @@ export default function App() {
     return (
       <div>
         <h3>{loadingFeedback}</h3>
+        <small>Starter ready</small>
       </div>
     );
   }
@@ -48,5 +49,10 @@ export default function App() {
     appNavigation.setNavStore(appStore.navStore as NavigationStore);
   }
 
-  return <AppEntry />;
+  return (
+    <>
+      <small>Starter ready</small>
+      <AppEntry />
+    </>
+  );
 }
