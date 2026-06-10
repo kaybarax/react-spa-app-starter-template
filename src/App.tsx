@@ -37,9 +37,23 @@ export default function App() {
 
   if (!appStoresLoaded || isEmptyObject(stores)) {
     return (
-      <div>
-        <h3>{loadingFeedback}</h3>
-      </div>
+      <>
+        <small style={{
+          position: 'fixed',
+          bottom: 8,
+          right: 8,
+          background: '#f0f0f0',
+          padding: '2px 6px',
+          borderRadius: 4,
+          fontSize: 11,
+          zIndex: 9999,
+        }}>
+          Starter ready
+        </small>
+        <div>
+          <h3>{loadingFeedback}</h3>
+        </div>
+      </>
     );
   }
 
@@ -48,5 +62,21 @@ export default function App() {
     appNavigation.setNavStore(appStore.navStore as NavigationStore);
   }
 
-  return <AppEntry />;
+  return (
+    <>
+      <small style={{
+        position: 'fixed',
+        bottom: 8,
+        right: 8,
+        background: '#f0f0f0',
+        padding: '2px 6px',
+        borderRadius: 4,
+        fontSize: 11,
+        zIndex: 9999,
+      }}>
+        Starter ready
+      </small>
+      <AppEntry />
+    </>
+  );
 }
