@@ -1,136 +1,130 @@
 /**
- * @authored by Kaybarax
- * Twitter @_ https://twitter.com/Kaybarax
- * Github @_ https://github.com/Kaybarax
- * LinkedIn @_ https://linkedin.com/in/kaybarax
+ * @authored by Kevin
+ * Twitter @_ https://x.com/kaybarax
+ * Github @_ https://github.com/kaybarax
+ * LinkedIn @_ https://linkedin.com/in/kevin-barasa
  */
 
 import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
-import TextField from '@material-ui/core/TextField';
 import { handleSignUp } from '../../controllers/login-controller';
-import { textValueChanged } from '../../util/react-web-forms-data-collection-utils';
 import { isEmptyString } from '../../util/util';
+import { User } from '../../app-management/data-manager/models-manager';
 
-export default function SignUpForm(props: any) {
-  const { signUpModel, notificationAlert, showLoginForm } = props;
+export interface SignUpFormProps {
+  onSignUpSuccess: () => void;
+}
 
-  const [submit_pressed, set_press_submit] = React.useState(false);
+export default function SignUpForm({ onSignUpSuccess }: SignUpFormProps) {
+  const [name, setName] = React.useState('');
+  const [usernameOrEmail, setUsernameOrEmail] = React.useState('');
+  const [password, setPassword] = React.useState('');
+  const [confirmPassword, setConfirmPassword] = React.useState('');
+  const [submitPressed, setSubmitPressed] = React.useState(false);
 
-  const useStyles = makeStyles(theme => ({
-    root: {
-      '& > *': {
-        margin: theme.spacing(1),
-        width: '25ch',
-      },
-    },
-  }));
+  const nameMissing = submitPressed && isEmptyString(name);
+  const usernameOrEmailMissing = submitPressed && isEmptyString(usernameOrEmail);
+  const passwordMissing = submitPressed && isEmptyString(password);
+  const confirmPasswordMissing = submitPressed && isEmptyString(confirmPassword);
+  const passwordsMismatch = submitPressed && !isEmptyString(confirmPassword) && password !== confirmPassword;
 
-  const classes = useStyles();
+  const isValidFormData = () =>
+    !isEmptyString(name) &&
+    !isEmptyString(usernameOrEmail) &&
+    !isEmptyString(password) &&
+    !isEmptyString(confirmPassword) &&
+    password === confirmPassword;
 
-  const isValidFormData = (): boolean => {
-    let validForm = true;
-    set_press_submit(false); //assume not pressed
-
-    if (isEmptyString(signUpModel.user['name'])) {
-      validForm = false;
-      set_press_submit(true);
-      return validForm;
+  const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setSubmitPressed(true);
+    if (!isValidFormData()) {
+      return;
     }
-    if (isEmptyString(signUpModel.user['usernameOrEmail'])) {
-      validForm = false;
-      set_press_submit(true);
-      return validForm;
-    }
-    if (isEmptyString(signUpModel.user['password'])) {
-      validForm = false;
-      set_press_submit(true);
-      return validForm;
-    }
-    if (isEmptyString(signUpModel['confirmPassword'])) {
-      validForm = false;
-      set_press_submit(true);
-      return validForm;
-    }
-    if (signUpModel.user['password'] !== signUpModel['confirmPassword']) {
-      validForm = false;
-      set_press_submit(true);
-      return validForm;
-    }
-
-    return validForm;
+    const user = new User();
+    user.name = name;
+    user.usernameOrEmail = usernameOrEmail;
+    user.password = password;
+    handleSignUp(user, onSignUpSuccess);
   };
 
   return (
-    <React.Fragment>
-      <form className={classes.root} noValidate autoComplete="off">
-        {submit_pressed && isEmptyString(signUpModel.user.name) && (
-          <small style={{ color: 'red' }}> * This field is required.</small>
-        )}
-        <br />
-        <TextField
-          id="name"
-          label="Name"
-          type={'text'}
-          onChange={e => textValueChanged(signUpModel.user, e.target.value, 'name')}
-        />
-        <br />
-        {submit_pressed && isEmptyString(signUpModel.user.usernameOrEmail) && (
-          <small style={{ color: 'red' }}> * This field is required.</small>
-        )}
-        <br />
-        <TextField
-          id="username-or-email"
-          label="Username/Email"
-          type={'text'}
-          onChange={e => textValueChanged(signUpModel.user, e.target.value, 'usernameOrEmail')}
-        />
-        <br />
-        {submit_pressed && isEmptyString(signUpModel.user.password) && (
-          <small style={{ color: 'red' }}> * This field is required.</small>
-        )}
-        <br />
-        <TextField
-          id="password"
-          label="Password"
-          type={'password'}
-          onChange={e => textValueChanged(signUpModel.user, e.target.value, 'password')}
-        />
-        <br />
-        {submit_pressed && isEmptyString(signUpModel.confirmPassword) && (
-          <small style={{ color: 'red' }}> * This field is required.</small>
-        )}
-        <br />
-        <TextField
-          id="confirmPassword"
-          label="Confirm Password"
-          type={'password'}
-          onChange={e => textValueChanged(signUpModel, e.target.value, 'confirmPassword')}
-        />
-        <br />
-        {submit_pressed && signUpModel.user.password !== signUpModel.confirmPassword && (
-          <small style={{ color: 'red' }}>Passwords do not match.</small>
-        )}
-        <br />
-        <button
-          color="primary"
-          type={'submit'}
-          onClick={e => {
-            e.preventDefault();
-            if (!isValidFormData()) {
-              return;
-            }
-            handleSignUp(signUpModel, notificationAlert);
-            //ready for the next user
-            //some time to allow the alert to display
-            setTimeout(() => showLoginForm(), 1500);
-          }}
-        >
-          Sign Up
-        </button>
-        <br />
+    <form className="login-registration-form" noValidate autoComplete="off" onSubmit={onSubmit}>
+      <div className="field">
+        <label className="label" htmlFor="name">
+          Name
+        </label>
+        <div className="control">
+          <input
+            id="name"
+            className={`input ${nameMissing ? 'is-danger' : ''}`}
+            type="text"
+            value={name}
+            onChange={e => setName(e.target.value)}
+          />
+        </div>
+        {nameMissing && <p className="help is-danger">* This field is required.</p>}
+      </div>
+
+      <div className="field">
+        <label className="label" htmlFor="username-or-email">
+          Username/Email
+        </label>
+        <div className="control">
+          <input
+            id="username-or-email"
+            className={`input ${usernameOrEmailMissing ? 'is-danger' : ''}`}
+            type="text"
+            value={usernameOrEmail}
+            onChange={e => setUsernameOrEmail(e.target.value)}
+          />
+        </div>
+        {usernameOrEmailMissing && <p className="help is-danger">* This field is required.</p>}
+      </div>
+
+      <div className="field">
+        <label className="label" htmlFor="password">
+          Password
+        </label>
+        <div className="control">
+          <input
+            id="password"
+            className={`input ${passwordMissing ? 'is-danger' : ''}`}
+            type="password"
+            value={password}
+            onChange={e => setPassword(e.target.value)}
+          />
+        </div>
+        {passwordMissing && <p className="help is-danger">* This field is required.</p>}
+      </div>
+
+      <div className="field">
+        <label className="label" htmlFor="confirm-password">
+          Confirm Password
+        </label>
+        <div className="control">
+          <input
+            id="confirm-password"
+            className={`input ${confirmPasswordMissing || passwordsMismatch ? 'is-danger' : ''}`}
+            type="password"
+            value={confirmPassword}
+            onChange={e => setConfirmPassword(e.target.value)}
+          />
+        </div>
+        {confirmPasswordMissing && <p className="help is-danger">* This field is required.</p>}
+        {passwordsMismatch && <p className="help is-danger">Passwords do not match.</p>}
+      </div>
+
+      <div className="field">
+        <div className="control">
+          <button className="button is-primary" type="submit">
+            Sign Up
+          </button>
+        </div>
+      </div>
+
+      <p>
         <i>Your sign up data is stored locally in your browser's embedded IndexedDb</i>
-      </form>
-    </React.Fragment>
+      </p>
+    </form>
   );
 }

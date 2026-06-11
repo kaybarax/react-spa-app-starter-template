@@ -1,22 +1,20 @@
 /**
- * @authored by Kaybarax
- * Twitter @_ https://twitter.com/Kaybarax
- * Github @_ https://github.com/Kaybarax
- * LinkedIn @_ https://linkedin.com/in/kaybarax
+ * @authored by Kevin
+ * Twitter @_ https://x.com/kaybarax
+ * Github @_ https://github.com/kaybarax
+ * LinkedIn @_ https://linkedin.com/in/kevin-barasa
  */
 
 import { FC } from 'react';
 import SafeComponentWrapper from '../app/safe-component-wrapper';
-import { Helmet } from 'react-helmet';
+import { TITLE } from '../app/app-config';
 
 export const AppDevScratchPadPath = '/app-dev-scratch-pad';
 
 const AppDevScratchPad: FC = () => {
   return (
     <SafeComponentWrapper>
-      <Helmet>
-        <title>{' Mock Stuff Page '}</title>
-      </Helmet>
+      <title>{TITLE + ' | Dev Scratch Pad'}</title>
 
       <div className="container is-fluid">
         <div className={'flex-row-container'}>

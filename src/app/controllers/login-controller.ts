@@ -1,55 +1,55 @@
 /**
- * @authored by Kaybarax
- * Twitter @_ https://twitter.com/Kaybarax
- * Github @_ https://github.com/Kaybarax
- * LinkedIn @_ https://linkedin.com/in/kaybarax
+ * @authored by Kevin
+ * Twitter @_ https://x.com/kaybarax
+ * Github @_ https://github.com/kaybarax
+ * LinkedIn @_ https://linkedin.com/in/kevin-barasa
  */
 
 import { notificationCallback } from '../shared-components-and-modules/notification-center/notifications-controller';
-import { deepCloneObject, isNullUndefined } from '../util/util';
 import { APP_INDEXED_DB_DATA_STORES } from '../app-management/data-manager/indexeddb-manager';
-
-import { NotificationAlert } from '../shared-components-and-modules/notification-center/notification-utils';
-import { AuthStore } from '../stores/auth-store';
 import { User } from '../app-management/data-manager/models-manager';
-import { AppState } from '../stores';
+import { useAppStore } from '../stores';
+import authStore from '../stores/auth-store';
 
-export function handleSignUp(signUpModel: Record<string, unknown>, notificationAlert: NotificationAlert): void {
+export interface LoginCredentials {
+  usernameOrEmail: string;
+  password: string;
+}
+
+export function handleSignUp(user: User, onSignUpSuccess?: () => void): void {
   //save to indexedDb if you fancy
   const db = window.db; //get db;
   if (!db) {
     console.error('Database not initialized');
+    notificationCallback('err', 'Local database not initialized');
     return;
   }
 
-  // Start a database transaction and get the notes object store
+  // Start a database transaction and get the users object store
   const tx = db.transaction([APP_INDEXED_DB_DATA_STORES.USERS], 'readwrite');
   const store = tx.objectStore(APP_INDEXED_DB_DATA_STORES.USERS);
-  // Put the sticky note into the object store
-  const user = deepCloneObject(signUpModel.user) as User;
-  const userId = user.id;
-  //then strip id away
-  delete (user as Partial<User>).id;
-  store.add(user, userId);
+  // Put the user into the object store, keyed by their id
+  const { id: userId, ...userRecord } = user;
+  store.add(userRecord, userId);
   // Wait for the database transaction to complete
   tx.oncomplete = function () {
-    notificationCallback('succ', 'Sign up success', notificationAlert);
+    notificationCallback('succ', 'Sign up success');
+    if (onSignUpSuccess) {
+      //some time to allow the alert to display
+      setTimeout(onSignUpSuccess, 1500);
+    }
   };
   tx.onerror = function (event: Event) {
-    console.log('error storing note ' + (event.target as IDBTransaction).error);
-    notificationCallback('err', 'Sign up failed!', notificationAlert);
+    console.log('error storing user ' + (event.target as IDBTransaction).error);
+    notificationCallback('err', 'Sign up failed!');
   };
 }
 
-export function handleLogin(
-  loginForm: Record<string, unknown>,
-  notificationAlert: NotificationAlert,
-  appStore: AppState,
-  appAuth: AuthStore,
-): void {
+export function handleLogin(credentials: LoginCredentials): void {
   const db = window.db; //get db;
   if (!db) {
     console.error('Database not initialized');
+    notificationCallback('err', 'Local database not initialized');
     return;
   }
 
@@ -60,32 +60,29 @@ export function handleLogin(
   // Set up a request to get all users
   const req = store.getAll();
 
-  // If we get an error
   req.onerror = function (event: Event) {
     console.log('error getting users ', (event.target as IDBRequest).error);
-    notificationCallback('err', 'Cannot query users', notificationAlert);
+    notificationCallback('err', 'Cannot query users');
   };
 
-  // onsuccess handler
   req.onsuccess = function (event: Event) {
     const users = (event.target as IDBRequest<User[]>).result;
 
     const user = users.find(
-      item => item.usernameOrEmail === loginForm.usernameOrEmail && item.password === loginForm.password,
+      item => item.usernameOrEmail === credentials.usernameOrEmail && item.password === credentials.password,
     );
-    if (isNullUndefined(user)) {
-      notificationCallback('err', 'User not found', notificationAlert);
+    if (!user) {
+      notificationCallback('err', 'User not found');
       return;
     }
-    // Type assertion to tell TypeScript that user is definitely a User at this point
-    appStore.user = <User>deepCloneObject(user as User);
-    notificationCallback('succ', 'Login success', notificationAlert);
-    //to allow notification display
-    setTimeout(() => appAuth.handleLogin(), 2000);
+    useAppStore.setState({ user: { ...user } });
+    notificationCallback('succ', 'Login success');
+    //to allow notification display before navigating away
+    setTimeout(() => authStore.handleLogin(), 1500);
   };
 }
 
-export function handleResetPassword(notificationAlert: NotificationAlert): void {
+export function handleResetPassword(): void {
   //todo: ... your logic ... you get the drill by now
-  notificationCallback('info', 'You can play around with this, mate. Cheers!)', notificationAlert);
+  notificationCallback('info', 'You can play around with this, mate. Cheers!');
 }

@@ -1,36 +1,24 @@
 /**
- * @authored by Kaybarax
- * Twitter @_ https://twitter.com/Kaybarax
- * Github @_ https://github.com/Kaybarax
- * LinkedIn @_ https://linkedin.com/in/kaybarax
+ * @authored by Kevin
+ * Twitter @_ https://x.com/kaybarax
+ * Github @_ https://github.com/kaybarax
+ * LinkedIn @_ https://linkedin.com/in/kevin-barasa
  */
 
 import React from 'react';
 import { HeaderMenuNavigation } from '../routing-and-navigation/header-menu-navigation';
-import { Helmet } from 'react-helmet';
 import { TITLE } from '../app-config';
 import { isEmptyArray } from '../util/util';
 import { SOs_and_Credits_List } from '../app-management/data-manager/list-manager';
-import { useAppStore } from '../stores';
 import imagePlaceholder from '../media/images/image.png';
 import shortParagraphImage from '../media/images/short-paragraph.png';
 import { appNavigation, AppRoutes } from '../routing-and-navigation/app-navigation';
 
 export default function Page4Example() {
-  // Get stores directly from hooks
-  const appStore = useAppStore();
-  console.log('Page4Example appStore', appStore);
-
-  // because from this page, navigations will
-  // be performed, init navigator with {history, location, match}
-  // from props
-  // appNavigation.initNavigator(props);
-
   const _viewAttributedPersonDetails = (
     e: React.MouseEvent<HTMLImageElement, MouseEvent> | React.MouseEvent<HTMLAnchorElement, MouseEvent>,
     person: string,
   ) => {
-    console.log('person', person);
     e.preventDefault();
 
     // Navigate to the Page4SubItemExample route with the person parameter
@@ -41,10 +29,8 @@ export default function Page4Example() {
 
   return (
     <React.Fragment>
-      <Helmet>
-        <title>{TITLE + ' | Page4'}</title>
-      </Helmet>
-      <HeaderMenuNavigation appStore={appStore} />
+      <title>{TITLE + ' | Page 4 — About Me, S/Os & Credits'}</title>
+      <HeaderMenuNavigation />
 
       <div className={'flex-row-container'}>
         <div className={'flex-container-child-item center-align-content'}>
@@ -71,18 +57,18 @@ export default function Page4Example() {
             <strong>Let's connect:</strong>
             <br />
             LinkedIn:{' '}
-            <a href={'https://linkedin.com/in/kaybarax'} target={'_blank'}>
-              Kevin Barasa (kaybarax)
+            <a href={'https://linkedin.com/in/kevin-barasa'} target={'_blank'}>
+              Kevin Barasa
             </a>
             <br />
             Github:{' '}
-            <a href={'https://github.com/Kaybarax'} target={'_blank'}>
-              Kaybarax
+            <a href={'https://github.com/kaybarax'} target={'_blank'}>
+              kaybarax
             </a>
             <br />
             Twitter:{' '}
-            <a href={'https://twitter.com/Kaybarax'} target={'_blank'}>
-              Kaybarax
+            <a href={'https://x.com/kaybarax'} target={'_blank'}>
+              kaybarax
             </a>
           </p>
 

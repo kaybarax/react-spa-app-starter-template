@@ -13,8 +13,13 @@ This directory contains a simplified implementation of the stores subsystem usin
 
 - `createStore.ts`: A utility function to create zustand stores with persistence and reset functionality
 - `stores.ts`: Definitions of all stores used in the application
+- `auth-store.ts`: The authentication store (login/logout/checks) plus a singleton facade for use outside React
+- `actions-and-stores-data.ts`: Shared store constants and action enums
 - `index.ts`: Exports all stores and utilities
-- `test-stores.ts`: A simple test file to verify that the stores work as expected
+- `createStore.test.ts`: Vitest unit tests covering store creation, updates, reset, and persistence
+
+> Note: stores hold your app's working/UI state. Server data belongs in the TanStack Query
+> cache — see `views/page-5-server-data-example.tsx` for the pattern.
 
 ## Usage
 

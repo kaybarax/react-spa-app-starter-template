@@ -1,6 +1,6 @@
 //key
 //sd - self described
-//@authored by Kaybarax -- Twitter @_ https://twitter.com/Kaybarax, Github @_ https://github.com/Kaybarax, LinkedIn @_ https://linkedin.com/in/kaybarax
+//@authored by Kevin -- Twitter @_ https://x.com/kaybarax, Github @_ https://github.com/kaybarax, LinkedIn @_ https://linkedin.com/in/kevin-barasa
 
 //containers
 //start flex containers
@@ -17,7 +17,6 @@
     text-align: center;
     margin: 5px; /* and that, will result in a 10px gap */
   }
-
 }
 
 .flex-fluid-row-container {
@@ -125,3 +124,21 @@
 }
 
 // end flex container content alignments
+
+// global notification alert (see shared-components-and-modules/notification-center)
+.app-notification {
+  position: fixed;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1000;
+  min-width: 280px;
+  max-width: 90vw;
+
+  &.app-notification-top {
+    top: 1rem;
+  }
+
+  &.app-notification-bottom {
+    bottom: 1rem;
+  }
+}

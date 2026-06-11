@@ -1,38 +1,40 @@
 /**
- * @authored by Kaybarax
- * Twitter @_ https://twitter.com/Kaybarax
- * Github @_ https://github.com/Kaybarax
- * LinkedIn @_ https://linkedin.com/in/kaybarax
+ * @authored by Kevin
+ * Twitter @_ https://x.com/kaybarax
+ * Github @_ https://github.com/kaybarax
+ * LinkedIn @_ https://linkedin.com/in/kevin-barasa
  */
 
-import { FC, ReactNode, useState } from 'react';
+import { Component, ErrorInfo, ReactNode } from 'react';
 import FallBackPage from './fall-back-page';
 
 export interface SafeComponentWrapperProps {
   children: ReactNode;
 }
-const SafeComponentWrapper: FC<SafeComponentWrapperProps> = ({ children }) => {
-  const [state] = useState<{ hasError: boolean; error: Error | null }>({
-    hasError: false,
-    error: null,
-  });
 
-  // const getDerivedStateFromError = (error: Error) => {
-  //   setState({ hasError: true, error });
-  // };
+interface SafeComponentWrapperState {
+  hasError: boolean;
+}
 
-  // const componentDidCatch = (error: Error, info: any) => {
-  //   console.log('caught error --- ', state.error);
-  //   console.log('has error --- ', state.hasError);
-  //   console.log('info --- ', info);
-  //   console.log('error --- ', error);
-  // };
+/**
+ * Error boundary around the app's view tree. Error boundaries must be class
+ * components — React has no hook equivalent for componentDidCatch.
+ */
+export default class SafeComponentWrapper extends Component<SafeComponentWrapperProps, SafeComponentWrapperState> {
+  state: SafeComponentWrapperState = { hasError: false };
 
-  if (state.hasError) {
-    return <FallBackPage />;
+  static getDerivedStateFromError(): SafeComponentWrapperState {
+    return { hasError: true };
   }
 
-  return <>{children}</>;
-};
+  componentDidCatch(error: Error, info: ErrorInfo): void {
+    console.error('SafeComponentWrapper caught an error', error, info);
+  }
 
-export default SafeComponentWrapper;
+  render(): ReactNode {
+    if (this.state.hasError) {
+      return <FallBackPage />;
+    }
+    return this.props.children;
+  }
+}

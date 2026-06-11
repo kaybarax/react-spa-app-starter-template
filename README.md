@@ -1,179 +1,147 @@
-# React + TypeScript + Vite
+# React SPA Web App Starter, Template Framework
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
-
-Currently, two official plugins are available:
-
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
-
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
-
-```js
-export default tseslint.config({
-  extends: [
-    // Remove ...tseslint.configs.recommended and replace with this
-    ...tseslint.configs.recommendedTypeChecked,
-    // Alternatively, use this for stricter rules
-    ...tseslint.configs.strictTypeChecked,
-    // Optionally, add this for stylistic rules
-    ...tseslint.configs.stylisticTypeChecked,
-  ],
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
-```
-
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
-
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default tseslint.config({
-  plugins: {
-    // Add the react-x and react-dom plugins
-    'react-x': reactX,
-    'react-dom': reactDom,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended typescript rules
-    ...reactX.configs['recommended-typescript'].rules,
-    ...reactDom.configs.recommended.rules,
-  },
-})
-```
-
-
-
-## React SPA Web App Starter, Template Framework
 Get up and running quickly, with building your React JS SPA web application.
 
-#### All batteries included like Angular (global state manager [Zustand] hooked to localStorage for seamless persistence of component data stores and offline facility, and sound routing and navigation logic built on top of [React Router])
+#### All batteries included like Angular — global state manager ([Zustand](https://github.com/pmndrs/zustand)) hooked to localStorage for seamless persistence of component data stores and offline facility; sound routing and navigation logic built on top of [React Router](https://reactrouter.com/); secured routes with a built-in auth guard; and [TanStack Query](https://tanstack.com/query/latest) pre-wired for the day a server comes into play.
+
+## The stack
+
+| Concern               | Powered by                                                  |
+| --------------------- | ----------------------------------------------------------- |
+| UI library            | React 19                                                     |
+| Build / dev tooling   | Vite 8 (TypeScript 6, ESLint 10, Prettier)                   |
+| Global state          | Zustand 5, persisted to localStorage                         |
+| Routing & navigation  | React Router 7, wrapped in the template's navigation logic   |
+| Server data (optional)| TanStack Query 5 — provider mounted, demo page included      |
+| Styling               | Bulma 1 + Sass                                               |
+| Unit testing          | Vitest 4 + Testing Library (managed by Vite)                 |
+| E2E testing           | Playwright                                                   |
+| Local "backend"       | IndexedDB (sign up / login demo) — no server required        |
 
 > Getting up and running:
 >
 * `$ git clone <this repo>`
 * `$ yarn install | npm install`
 * `$ yarn dev | npm run dev`
-* A browser window should automatically open to the application at http://localhost:3000
+* Open the application at http://localhost:3000
 >
 
 And you are good to go!
+
+### Scripts
+
+| Script               | What it does                                  |
+| -------------------- | --------------------------------------------- |
+| `yarn dev`           | Start the Vite dev server on port 3000        |
+| `yarn build`         | Type-check and produce a production build     |
+| `yarn preview`       | Preview the production build                  |
+| `yarn lint`          | Lint with ESLint                              |
+| `yarn format`        | Format with Prettier                          |
+| `yarn test`          | Run the Vitest unit test suite                |
+| `yarn test:watch`    | Run Vitest in watch mode                      |
+| `yarn test:coverage` | Unit tests with coverage report               |
+| `yarn test:e2e`      | Run the Playwright end-to-end tests           |
 
 ## A brief system breakdown
 
 ### Let's start here!
 
 So you have an SPA web app that you want to build with React Js.
-And you need to come up with an app-wide, system design setup. That is, system breakdown to  
-individual bits and pieces like, routing and navigation, controllers, app's global  state
-management, and sharing components' state information;  configuring security access for your
-pages, as to which are publicly accessible, and which  a user must be logged in and authenticated
-to access; and even different  types of access based on roles.
-Well, this self-guiding design employed here in this,  "React Js SPA Web App with Login Starter
-Template Framework Design"  has got you covered.
+And you need to come up with an app-wide, system design setup. That is, system breakdown to
+individual bits and pieces like, routing and navigation, controllers, app's global state
+management, and sharing components' state information; configuring security access for your
+pages, as to which are publicly accessible, and which a user must be logged in and authenticated
+to access; and even different types of access based on roles.
+Well, this self-guiding design employed here in this, "React Js SPA Web App with Login Starter
+Template Framework Design" has got you covered.
 
 ### The design philosophy!
+
 #### App working data and main components state/data (the stores):
 All app working data, and main components state is managed in your "stores."
 So, you have a main store "app" which, specifically, is for managing running app data.
-Then you have other stores based on, and for your app's main components, in this showcase,  
-that would be the components [page1, page2, page3, page4]. Those stores essential hold the
-component's  state globally, such that their information can be shared across each other.
+Then you have other stores based on, and for your app's main components, in this showcase,
+that would be the components [page1, page2, page3, page4] plus the secured app. Those stores
+essentially hold the component's state globally, such that their information can be shared
+across each other.
 
-The stores mini-ecosystem within the design is setup in its directory across multiple files  
-that are very much self explanatory to their roles. As you use this design system, just
-go with  the flow there to extend (especially for "app" store) and add your own new stores for  
-your app's components; and if you feel you can and want to improve on their design, of course, sure you can.
-
-The stores are persisted to localStorage so that you don't lose your working data across page reloads.
+The stores mini-ecosystem lives in `src/app/stores`, built on a tiny `createStore` factory that
+wraps Zustand's `persist` middleware — every store is automatically persisted to localStorage so
+you don't lose your working data across page reloads, and every store gets a `reset()` action.
+Add your own stores by following the pattern in `stores.ts`.
 
 #### Controllers functions:
-The first Javascript framework I worked with was AngularJs. That very first iteration of Angular.
-And that's where I really got introduced to the MVC design pattern, hands on, after a partial
-introduction in  Java's Swing. React is a view library and not a full blown framework like Angular.
-But I am sure like most  engineers, we like the practice of splitting things apart and dealing with
-them in pieces. So, let's  have React components' classes or functions only deal with mostly the
-UI rendering, while any, and most of the functions that, that component/activity relies on be lifted
-out to a "controller" file for that  activity, and you can just import and use as you wish.
-Just like the stores, the "controllers" are wrapped in their own directory for clean architecture  
-encapsulation of bits and pieces.
+React is a view library and not a full blown framework like Angular. But like most engineers, we
+like the practice of splitting things apart and dealing with them in pieces. So, React components
+only deal with the UI rendering, while the functions a view relies on are lifted out to a
+"controller" file for that activity (see `src/app/controllers`), which you import and use as you wish.
 
 #### Routing and navigation:
-Again, React being a view library, well, no router and navigation pattern inherently included, and  
-so it's up to the developer to pick and choose what they fancy. So I have picked a router that I  
-found fitting from experience with it, for this template framework design around React. Details on  
-this choice of router, and other parts of the system, in the next example page.
-And so with the selected router, I built around it a navigation and routing logic that so far,  
-so good, I can smile about, and I find serving the whole system design, pretty well.
-Routing and navigation logic setup is wrapped up in its own "routing-and-navigation"  directory.
-Follow the pattern therein, to add your own new routes and navigation functionality  for your app.
+Built on top of React Router 7, wrapped in the template's own navigation logic
+(`src/app/routing-and-navigation`): central route declarations, an `appNavigation` singleton you
+can call from anywhere (views, controllers, stores), a navigation trail tracked in the app store,
+and a `RequireAuth` guard component that protects the secured routes — unauthenticated visitors
+are redirected to the login page. Follow the pattern therein to add your own routes.
 
-So the above are the major parts of the system that needed a special mention. The rest are rather  
-self explanatory from a glance, container directory naming, and directory included "ABOUT.md"
-Next up, what's in the box! What are bits and pieces that glue together, and power up this SPA
-starter  template framework design???
+#### Login, sign up and the secured app:
+The template ships with a working sign up / login / logout flow, no server needed: users are
+stored in the browser's IndexedDB (`src/app/app-management/data-manager`), authentication state
+lives in the persisted auth store, and the secured pages are wrapped in the route guard. Swap the
+IndexedDB calls in `src/app/controllers/login-controller.ts` for your real backend when you have one.
 
-### All batteries included!
-So, what's under the hood!!
-#### State/Stores Manager:
-The extremely, philosophically, and amazingly powerful [MobX](https://mobx-state-tree.js.org/intro/philosophy).
-You can read more about [Michel Weststrate's](https://twitter.com/mweststrate) powerful MobX state manager creation.
+#### Server data, when a server shows up (TanStack Query):
+This template is a fully self-contained frontend app — it runs without any server. But the moment
+a server comes into play, TanStack Query is the blessed option for fetching, caching and
+synchronizing server data. The `QueryClientProvider` is already mounted at the app entry, and
+Page 5 (`src/app/views/page-5-server-data-example.tsx`) demonstrates the whole pattern: loading,
+error, cached and refetch states. The rule of thumb: stores for your app's working/UI state,
+the query cache for server state.
 
-As mentioned earlier, currently, the system design persists your running app's state/stores to, localStorage,
-Web Storage, but you can upgrade to IndexedDb if you are dealing with heavy data. I have already  implemented
-IndexedDb in some parts of the system, so you have a point of reference to pick up from.
+#### Notifications:
+A global notification center (`src/app/shared-components-and-modules/notification-center`)
+renders Bulma-styled alerts from anywhere — views, controllers, stores — through a single
+`notificationCallback(type, message)` call.
 
-#### Router for routing and navigation:
-The React Community's most popular, React Router.
+#### Testing:
+Unit tests are managed by Vite through Vitest (`*.test.ts(x)` co-located with the source, jsdom
+environment, Testing Library for components) — see the examples next to `util.ts`,
+`createStore.ts`, `login-form.tsx` and the notification center. End-to-end journeys are covered
+by Playwright in `tests/e2e`, including the full sign up → login → secured app → logout flow.
 
-#### And there you have it:
-So, Come up with frontend application design architecture from experience, over the years;
-get those components above, and put them together with React js; and you have an all batteries
-included,  shiny whistles and bells, React Js SPA web app template framework to start you off to
-build, both your web app  that facilitates a secure app with sign up, login and authentication;
-or even a static web app like  you would get with Gatsby Js or Next Js, the only difference being
-that those are Server Side Rendered  (SSR) while this is an all frontend side, single package packaged SPA.
-This current design mode is for an SPA with built in Login and Sign Up facilities for a  secured web app.
-Next up after this, one for a completely unsecured web app from the start, for your  unsecured web app,
-static site starter; it will still have the facilities for setting up login and  sign up like in this design,
-so you can convert it for that use case if you wish.  And you can also, of course, tweak and turn off the
-login and sign up, facilities in this web app template framework if you wish, and just use it as an,
-unsecured  SPA web app, static site generator.
+### And there you have it:
+Come up with frontend application design architecture from experience, over the years; get those
+components above, and put them together with React js; and you have an all batteries included,
+shiny whistles and bells, React Js SPA web app template framework to start you off to build your
+web app — one that facilitates a secure app with sign up, login and authentication; or even a
+fully public SPA — just tweak or turn off the login and sign up facilities if you don't need them.
 
 And now!
 
 ### About me, and S/Os and credits
 #### About me:
-Hi. I'm Kevin Barasa. A full stack software engineer currently based in my hometown and  country, Nairobi, Kenya.
-At this time of this build and writing (May, 2020), I have 3 and a half years of professional (hired) software
-engineering experience, and 5 to 6 yrs of  total software engineering experience, both professionally and personally.
+Hi. I'm Kevin Barasa. A full stack software engineer currently based in my hometown and country, Nairobi, Kenya.
+At the time of the original build of this template (May, 2020), I had 3 and a half years of professional (hired)
+software engineering experience, and 5 to 6 yrs of total software engineering experience, both professionally
+and personally.
 I'm especially, particularly well versed with Java, SQL (MySQL/OracleSQL), Javascript and web technologies,
-Mobile app development with React Native and Android,  and I have, and can as well work with other languages
+Mobile app development with React Native and Android, and I have, and can as well work with other languages
 and technologies like Python, C++, C#, Dart, NoSQL Dbs, and AWS cloud.
 
 #### Let's connect:
-LinkedIn: [Kevin Barasa (kaybarax)](https://www.linkedin.com/in/kaybarax/)
+LinkedIn: [Kevin Barasa](https://linkedin.com/in/kevin-barasa)
 
-Github: [Kaybarax](https://github.com/Kaybarax)
+Github: [kaybarax](https://github.com/kaybarax)
 
-Twitter: [Kaybarax](https://twitter.com/Kaybarax)
+Twitter: [kaybarax](https://x.com/kaybarax)
 
 #### Shout out's and credits:
-[Michel Weststrate](https://twitter.com/mweststrate) - Creator of [MobX](https://mobx-state-tree.js.org/intro/philosophy).
-The global state manager powering the app.
+[Daishi Kato](https://twitter.com/dai_shi) and the [Poimandres collective](https://github.com/pmndrs) —
+maintainers of [Zustand](https://github.com/pmndrs/zustand), the global state manager powering the app.
 
-[Andy Haskell](https://twitter.com/AndyHaskell2013) - Tutorial guide on implementing IndexedDb.
+[Tanner Linsley](https://twitter.com/tannerlinsley) — creator of [TanStack Query](https://tanstack.com/query/latest),
+the blessed option here for server data.
+
+[Andy Haskell](https://twitter.com/AndyHaskell2013) — tutorial guide on implementing IndexedDb.
 Thanks a lot dude for your tutorial I came across on [@Medium and Dev.to](https://dev.to/andyhaskell/build-a-basic-web-app-with-indexeddb-38ef).
 
 

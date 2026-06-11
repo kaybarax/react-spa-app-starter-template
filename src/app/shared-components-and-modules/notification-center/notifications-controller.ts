@@ -1,32 +1,51 @@
 /**
- * @authored by Kaybarax
- * Twitter @_ https://twitter.com/Kaybarax
- * Github @_ https://github.com/Kaybarax
- * LinkedIn @_ https://linkedin.com/in/kaybarax
+ * @authored by Kevin
+ * Twitter @_ https://x.com/kaybarax
+ * Github @_ https://github.com/kaybarax
+ * LinkedIn @_ https://linkedin.com/in/kevin-barasa
  */
 
-import { isNullUndefined } from '../../util/util';
+import { create } from 'zustand';
 import { NotificationAlert, NotificationType } from './notification-utils';
+
+export const notificationAlertProps: NotificationAlert = {
+  alert: false,
+  message: null,
+  type: null,
+  duration: 3500,
+  position: 'top',
+};
+
+export interface NotificationState extends NotificationAlert {
+  dismiss: () => void;
+}
+
+/**
+ * Global notification store. Any view or controller can trigger a
+ * notification through notificationCallback below; the single
+ * AppNotificationAlert component mounted at the app entry renders it.
+ */
+export const useNotificationStore = create<NotificationState>(set => ({
+  ...notificationAlertProps,
+  dismiss: () => set({ alert: false, message: null }),
+}));
+
+let dismissTimer: number | undefined;
 
 export function notificationCallback(
   notificationType: NotificationType,
   message: string,
-  notificationAlert: NotificationAlert,
   position: 'top' | 'bottom' = 'top',
   duration = 3500,
 ): void {
-  if (isNullUndefined(notificationAlert)) {
-    alert('Toast Notification not Specified');
-    return;
-  }
-
   let typeOfNotification: NotificationType = 'info'; //default to this
-  const typeOfNotificationMessage = 'You have not specifiedMessage'; //default to this
 
-  if (notificationType === 'err' || notificationType === 'error') {
-    typeOfNotification = 'error';
-  }
-  if (notificationType === 'failure' || notificationType === 'fail') {
+  if (
+    notificationType === 'err' ||
+    notificationType === 'error' ||
+    notificationType === 'failure' ||
+    notificationType === 'fail'
+  ) {
     typeOfNotification = 'error';
   }
   if (notificationType === 'succ' || notificationType === 'success') {
@@ -35,26 +54,15 @@ export function notificationCallback(
   if (notificationType === 'warn' || notificationType === 'warning') {
     typeOfNotification = 'warning';
   }
-  if (notificationType === 'information' || notificationType === 'info') {
-    typeOfNotification = 'info';
-  }
 
-  notificationAlert.alert = true;
-  notificationAlert.position = position;
-  notificationAlert.duration = duration;
-  notificationAlert.message = message || typeOfNotificationMessage;
-  notificationAlert.type = typeOfNotification;
-  setTimeout(() => {
-    notificationAlert.alert = false;
-    notificationAlert.message = null;
-  }, notificationAlert.duration);
+  useNotificationStore.setState({
+    alert: true,
+    type: typeOfNotification,
+    message: message || 'You have not specified a message',
+    position,
+    duration,
+  });
+
+  window.clearTimeout(dismissTimer);
+  dismissTimer = window.setTimeout(() => useNotificationStore.getState().dismiss(), duration);
 }
-
-export const notificationAlertProps: NotificationAlert = {
-  alert: false,
-  message: null,
-  type: null,
-  duration: 3500,
-  position: 'top',
-  activity: null,
-};

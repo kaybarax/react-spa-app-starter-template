@@ -1,60 +1,47 @@
 /**
- * @authored by Kaybarax
- * Twitter @_ https://twitter.com/Kaybarax
- * Github @_ https://github.com/Kaybarax
- * LinkedIn @_ https://linkedin.com/in/kaybarax
+ * @authored by Kevin
+ * Twitter @_ https://x.com/kaybarax
+ * Github @_ https://github.com/kaybarax
+ * LinkedIn @_ https://linkedin.com/in/kevin-barasa
  */
 
-import { Helmet } from 'react-helmet';
-import { TITLE } from '../../app-config';
+import React from 'react';
 import { handleResetPassword } from '../../controllers/login-controller';
 
-export function ResetPasswordForm(props: any) {
-  const { resetPasswordModel, notificationAlert } = props;
-  // const showLogin = () => {
-  //   loginStore.pageAction = LOGIN_PAGE_ACTIONS_ENUM.LOGIN;
-  // };
+export function ResetPasswordForm() {
+  const [usernameOrEmail, setUsernameOrEmail] = React.useState('');
+
+  const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    handleResetPassword();
+  };
 
   return (
-    <div>
-      <Helmet>
-        <title>{TITLE} - Reset Password</title>
-      </Helmet>
-      <div className="container">
-        <div className="row">
-          <div className="col-md-6 offset-md-3">
-            <div className="card card-body">
-              <h3>Reset Password</h3>
-              <form>
-                <div className="form-group">
-                  <label>Enter your email address</label>
-                  <input
-                    type="email"
-                    className="form-control"
-                    value={resetPasswordModel?.usernameOrEmail || ''}
-                    onChange={e => {
-                      if (resetPasswordModel) {
-                        resetPasswordModel.usernameOrEmail = e.target.value;
-                      }
-                    }}
-                  />
-                </div>
-                <button
-                  type="submit"
-                  className="btn btn-primary"
-                  onClick={e => {
-                    e.preventDefault();
-                    // Call the reset password handler from login-controller
-                    handleResetPassword(notificationAlert);
-                  }}
-                >
-                  Submit
-                </button>
-              </form>
-            </div>
-          </div>
+    <form className="login-registration-form" noValidate autoComplete="off" onSubmit={onSubmit}>
+      <h3 className="title is-4">Reset Password</h3>
+
+      <div className="field">
+        <label className="label" htmlFor="reset-username-or-email">
+          Enter your email address
+        </label>
+        <div className="control">
+          <input
+            id="reset-username-or-email"
+            className="input"
+            type="email"
+            value={usernameOrEmail}
+            onChange={e => setUsernameOrEmail(e.target.value)}
+          />
         </div>
       </div>
-    </div>
+
+      <div className="field">
+        <div className="control">
+          <button className="button is-primary" type="submit">
+            Submit
+          </button>
+        </div>
+      </div>
+    </form>
   );
 }

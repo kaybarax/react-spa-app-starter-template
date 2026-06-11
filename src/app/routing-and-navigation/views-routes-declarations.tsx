@@ -1,8 +1,8 @@
 /**
- * @authored by Kaybarax
- * Twitter @_ https://twitter.com/Kaybarax
- * Github @_ https://github.com/Kaybarax
- * LinkedIn @_ https://linkedin.com/in/kaybarax
+ * @authored by Kevin
+ * Twitter @_ https://x.com/kaybarax
+ * Github @_ https://github.com/kaybarax
+ * LinkedIn @_ https://linkedin.com/in/kevin-barasa
  */
 
 import React from 'react';
@@ -32,6 +32,11 @@ export const PAGE4EXAMPLE_VIEW_ROUTE = {
 export const PAGE4_SUB_ITEM_EXAMPLE_VIEW_ROUTE = {
   component: React.lazy(() => import('../views/page-4-sub-item-example')),
   path: `${PAGE4EXAMPLE_VIEW_ROUTE.path}/:item`,
+};
+
+export const PAGE5_SERVER_DATA_EXAMPLE_VIEW_ROUTE = {
+  component: React.lazy(() => import('../views/page-5-server-data-example')),
+  path: '/page-5-server-data-example',
 };
 
 export const LOGIN_AND_REGISTRATION_VIEW_ROUTE = {
