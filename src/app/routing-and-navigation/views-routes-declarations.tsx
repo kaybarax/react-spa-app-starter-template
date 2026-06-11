@@ -34,6 +34,11 @@ export const PAGE4_SUB_ITEM_EXAMPLE_VIEW_ROUTE = {
   path: `${PAGE4EXAMPLE_VIEW_ROUTE.path}/:item`,
 };
 
+export const PAGE5_SERVER_DATA_EXAMPLE_VIEW_ROUTE = {
+  component: React.lazy(() => import('../views/page-5-server-data-example')),
+  path: '/page-5-server-data-example',
+};
+
 export const LOGIN_AND_REGISTRATION_VIEW_ROUTE = {
   component: React.lazy(() => import('../views/login-and-registration/login')),
   path: '/login-and-registration',

@@ -7,30 +7,18 @@
 
 import React from 'react';
 import { HeaderMenuNavigation } from '../routing-and-navigation/header-menu-navigation';
-import { Helmet } from 'react-helmet';
 import { TITLE } from '../app-config';
 import { isEmptyArray } from '../util/util';
 import { SOs_and_Credits_List } from '../app-management/data-manager/list-manager';
-import { useAppStore } from '../stores';
 import imagePlaceholder from '../media/images/image.png';
 import shortParagraphImage from '../media/images/short-paragraph.png';
 import { appNavigation, AppRoutes } from '../routing-and-navigation/app-navigation';
 
 export default function Page4Example() {
-  // Get stores directly from hooks
-  const appStore = useAppStore();
-  console.log('Page4Example appStore', appStore);
-
-  // because from this page, navigations will
-  // be performed, init navigator with {history, location, match}
-  // from props
-  // appNavigation.initNavigator(props);
-
   const _viewAttributedPersonDetails = (
     e: React.MouseEvent<HTMLImageElement, MouseEvent> | React.MouseEvent<HTMLAnchorElement, MouseEvent>,
     person: string,
   ) => {
-    console.log('person', person);
     e.preventDefault();
 
     // Navigate to the Page4SubItemExample route with the person parameter
@@ -41,10 +29,8 @@ export default function Page4Example() {
 
   return (
     <React.Fragment>
-      <Helmet>
-        <title>{TITLE + ' | Page4'}</title>
-      </Helmet>
-      <HeaderMenuNavigation appStore={appStore} />
+      <title>{TITLE + ' | Page 4'}</title>
+      <HeaderMenuNavigation />
 
       <div className={'flex-row-container'}>
         <div className={'flex-container-child-item center-align-content'}>

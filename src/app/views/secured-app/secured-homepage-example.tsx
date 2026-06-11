@@ -6,37 +6,22 @@
  */
 
 import React from 'react';
-import { Helmet } from 'react-helmet';
 import { TITLE } from '../../app-config';
 import SecuredAppHeaderMenuNavigation from '../../routing-and-navigation/secured-app-header-menu-navigation';
+import { useSecuredAppStore } from '../../stores';
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export function SecuredHomepageExample(props: any) {
-  console.log('SecuredHomepageExample props', props);
+export function SecuredHomepageExample() {
+  const clicksCount = useSecuredAppStore(state => state.clicksCount);
 
-  const { appStore, securedAppStore } = props;
-  console.log('appStore -> ', appStore);
-  console.log('securedAppStore -> ', securedAppStore);
-
-  // let {} = securedHomepageStore;
-
-  // because from this page, navigations will
-  // be performed, init navigator with {history, location, match}
-  // from props
-  // appNavigation.initNavigator(props);
-
-  // No need to manually persist stores as zustand handles this automatically
-  React.useEffect(() => {
-    // This effect can be used for other initialization if needed
-  }, []);
+  const incrementClicksCount = () => {
+    useSecuredAppStore.setState(state => ({ clicksCount: state.clicksCount + 1 }));
+  };
 
   return (
     <React.Fragment>
-      <Helmet>
-        <title>{TITLE + ' | Secured App Home'}</title>
-      </Helmet>
+      <title>{TITLE + ' | Secured App Home'}</title>
 
-      <SecuredAppHeaderMenuNavigation appStore={appStore} />
+      <SecuredAppHeaderMenuNavigation />
 
       <div className={'flex-row-container'}>
         <div className={'flex-container-child-item center-align-content'}>
@@ -47,21 +32,22 @@ export function SecuredHomepageExample(props: any) {
       <div className={'flex-row-container'}>
         <div className={'flex-container-child-item center-align-content'}>
           <p style={{ textAlign: 'left' }}>You have accessed a page such as this, only because you have logged in!</p>
-          <p>
-            <h3>Try counting clicks</h3>
-            <button
-              onClick={() => {
-                securedAppStore.clicksCount += 1;
-              }}
-            >
+          <div>
+            <h3 className="title is-5">Try counting clicks</h3>
+            <button className="button is-link" onClick={incrementClicksCount}>
               Click me
             </button>
-            <h5>You have clicked {securedAppStore?.clicksCount}</h5>
-          </p>
+            <h5 className="subtitle is-6" style={{ marginTop: '0.75rem' }}>
+              You have clicked {clicksCount}
+            </h5>
+            <p>
+              <i>The count is store-managed and persisted — reload the page and it sticks around.</i>
+            </p>
+          </div>
         </div>
       </div>
     </React.Fragment>
   );
 }
 
-export default (SecuredHomepageExample);
+export default SecuredHomepageExample;

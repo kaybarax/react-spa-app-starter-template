@@ -7,32 +7,20 @@
 
 import React from 'react';
 import { HeaderMenuNavigation } from '../routing-and-navigation/header-menu-navigation';
-import { Helmet } from 'react-helmet';
 import { TITLE } from '../app-config';
 import { PAGE3EXAMPLE_VIEW_ROUTE } from '../routing-and-navigation/views-routes-declarations';
-import { useAppStore } from '../stores';
+import { appNavigation, AppRoutes } from '../routing-and-navigation/app-navigation';
 
 export default function Page2Example() {
-  // Get stores directly from hooks
-  const appStore = useAppStore();
-  console.log('Page2Example appStore', appStore);
-
-  // because from this page, navigations will
-  // be performed, init navigator with {history, location, match}
-  // from props
-  // appNavigation.initNavigator(props);
-
   const _continueToPage3 = (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
     e.preventDefault();
-    // appNavigation.navigateToPage3Example();
+    appNavigation.navigateTo(AppRoutes.PAGE3);
   };
 
   return (
     <React.Fragment>
-      <Helmet>
-        <title>{TITLE + ' | Page 2'}</title>
-      </Helmet>
-      <HeaderMenuNavigation appStore={appStore} />
+      <title>{TITLE + ' | Page 2'}</title>
+      <HeaderMenuNavigation />
 
       <div className={'flex-row-container'}>
         <div className={'flex-container-child-item center-align-content'}>

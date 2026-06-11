@@ -6,110 +6,50 @@
  */
 
 import React from 'react';
-import { isNullUndefined } from '../../util/util';
-import { Helmet } from 'react-helmet';
 import { TITLE } from '../../app-config';
-import { displayFieldExpectationSatisfied } from '../../controllers/app-controller';
 import { LOGIN_PAGE_ACTIONS } from '../../stores/actions-and-stores-data';
 import '../../theme/login-styles.scss';
-import { User } from '../../app-management/data-manager/models-manager';
-import { useAppStore, useLoginStore } from '../../stores';
-import LoginForm from './login-form.tsx';
-import SignUpForm from './sign-up-form.tsx';
-import { ResetPasswordForm } from './reset-password-form.tsx';
+import { useLoginStore } from '../../stores';
+import LoginForm from './login-form';
+import SignUpForm from './sign-up-form';
+import { ResetPasswordForm } from './reset-password-form';
 
 export default function Login() {
-  // Get stores directly from hooks
-  const appStore = useAppStore();
-  const loginStore = useLoginStore();
-
-  console.log('Login appStore', appStore, 'loginStore', loginStore);
-
-  // Use optional chaining to safely access notificationAlert
-  const { notificationAlert } = loginStore;
-  console.log('Login notificationAlert', notificationAlert);
-
-  // because from this page, navigations will
-  // be performed, init navigator with {history, location, match}
-  // from props
-  // appNavigation.initNavigator(props);
+  const pageAction = useLoginStore(state => state.pageAction);
 
   const showLoginForm = () => {
-    useLoginStore.setState({
-      pageAction: LOGIN_PAGE_ACTIONS.LOGIN
-    });
+    useLoginStore.setState({ pageAction: LOGIN_PAGE_ACTIONS.LOGIN });
   };
 
   const showSignUpForm = () => {
-    useLoginStore.setState(state => ({
-      signUpForm: {
-        ...state.signUpForm,
-        user: new User()
-      },
-      pageAction: LOGIN_PAGE_ACTIONS.SIGN_UP
-    }));
+    useLoginStore.setState({ pageAction: LOGIN_PAGE_ACTIONS.SIGN_UP });
   };
 
   const showResetPasswordForm = () => {
-    useLoginStore.setState({
-      pageAction: LOGIN_PAGE_ACTIONS.RESET_PASSWORD
-    });
+    useLoginStore.setState({ pageAction: LOGIN_PAGE_ACTIONS.RESET_PASSWORD });
   };
 
-  const showLogin =
-    displayFieldExpectationSatisfied('pageAction', loginStore, expectationOfX => isNullUndefined(expectationOfX)) ||
-    displayFieldExpectationSatisfied(
-      'pageAction',
-      loginStore,
-      expectationOfX => expectationOfX === LOGIN_PAGE_ACTIONS.LOGIN,
-    );
-
-  const showSignUp = displayFieldExpectationSatisfied(
-    'pageAction',
-    loginStore,
-    expectationOfX => expectationOfX === LOGIN_PAGE_ACTIONS.SIGN_UP,
-  );
-
-  const showResetPassword = displayFieldExpectationSatisfied(
-    'pageAction',
-    loginStore,
-    expectationOfX => expectationOfX === LOGIN_PAGE_ACTIONS.RESET_PASSWORD,
-  );
+  const showLogin = !pageAction || pageAction === LOGIN_PAGE_ACTIONS.LOGIN;
+  const showSignUp = pageAction === LOGIN_PAGE_ACTIONS.SIGN_UP;
+  const showResetPassword = pageAction === LOGIN_PAGE_ACTIONS.RESET_PASSWORD;
 
   return (
     <React.Fragment>
-      <Helmet>
-        <title>{TITLE + ' | Login'}</title>
-      </Helmet>
+      <title>{TITLE + ' | Login'}</title>
 
       <div>
         <div className={'flex-row-container'}>
           <div className={'flex-container-child-item center-align-content'}>
-            <h3 className={`login-action`}>
-              <span
-                className={`${showLogin ? 'selected' : ''}`}
-                onClick={() => {
-                  showLoginForm();
-                }}
-              >
+            <h3 className={`login-action title is-4`}>
+              <span className={`${showLogin ? 'selected' : ''}`} onClick={showLoginForm}>
                 Login
               </span>{' '}
               |&nbsp;
-              <span
-                className={`${showSignUp ? 'selected' : ''}`}
-                onClick={() => {
-                  showSignUpForm();
-                }}
-              >
+              <span className={`${showSignUp ? 'selected' : ''}`} onClick={showSignUpForm}>
                 Sign Up
               </span>{' '}
               |&nbsp;
-              <span
-                className={`${showResetPassword ? 'selected' : ''}`}
-                onClick={() => {
-                  showResetPasswordForm();
-                }}
-              >
+              <span className={`${showResetPassword ? 'selected' : ''}`} onClick={showResetPasswordForm}>
                 Reset Password
               </span>
             </h3>
@@ -120,13 +60,7 @@ export default function Login() {
         {showLogin && (
           <div className={'flex-row-container'}>
             <div className={'flex-container-child-item center-align-content'}>
-              {loginStore && (
-                <LoginForm
-                  loginModel={loginStore.loginForm}
-                  notificationAlert={notificationAlert || {}}
-                  appStore={appStore}
-                />
-              )}
+              <LoginForm />
             </div>
           </div>
         )}
@@ -134,13 +68,7 @@ export default function Login() {
         {showSignUp && (
           <div className={'flex-row-container'}>
             <div className={'flex-container-child-item center-align-content'}>
-              {loginStore && (
-                <SignUpForm
-                  signUpModel={loginStore.signUpForm}
-                  notificationAlert={notificationAlert || {}}
-                  showLoginForm={showLoginForm}
-                />
-              )}
+              <SignUpForm onSignUpSuccess={showLoginForm} />
             </div>
           </div>
         )}
@@ -148,30 +76,11 @@ export default function Login() {
         {showResetPassword && (
           <div className={'flex-row-container'}>
             <div className={'flex-container-child-item center-align-content'}>
-              {loginStore && (
-                <ResetPasswordForm
-                  resetPasswordModel={loginStore.resetPasswordForm}
-                  notificationAlert={notificationAlert || {}}
-                />
-              )}
+              <ResetPasswordForm />
             </div>
           </div>
         )}
       </div>
-
-      {/*{notificationAlert && displayFieldExpectationSatisfied('alert', notificationAlert as Record<string, unknown>, expectationOfX =>*/}
-      {/*  isTrue(expectationOfX),*/}
-      {/*) && (*/}
-      {/*  <div style={{ position: 'fixed', top: 0 }}>*/}
-      {/*    <AppNotificationAlert*/}
-      {/*      alert={notificationAlert.alert}*/}
-      {/*      message={notificationAlert.message}*/}
-      {/*      type={notificationAlert.type}*/}
-      {/*      duration={notificationAlert.duration}*/}
-      {/*      position={notificationAlert.position}*/}
-      {/*    />*/}
-      {/*  </div>*/}
-      {/*)}*/}
     </React.Fragment>
   );
 }

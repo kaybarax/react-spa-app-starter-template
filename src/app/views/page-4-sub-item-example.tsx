@@ -6,7 +6,6 @@
  */
 
 import React from 'react';
-import { Helmet } from 'react-helmet';
 import { useParams } from 'react-router-dom';
 import { TITLE } from '../app-config';
 import { isNullUndefined } from '../util/util';
@@ -14,18 +13,10 @@ import { SOs_and_Credits_List } from '../app-management/data-manager/list-manage
 import { faCoffee } from '@fortawesome/free-solid-svg-icons/faCoffee';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { HeaderMenuNavigation } from '../routing-and-navigation/header-menu-navigation';
-import { useAppStore, usePage4ExampleStore } from '../stores';
 import { appNavigation, AppRoutes } from '../routing-and-navigation/app-navigation';
 import imagePlaceholder from '../media/images/image.png';
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export default function Page4SubItemExample() {
-  // Get stores directly from hooks
-  const appStore = useAppStore();
-  const page4ExampleStore = usePage4ExampleStore();
-  console.log('Page4SubItemExample appStore', appStore);
-  console.log('Page4SubItemExample page4ExampleStore', page4ExampleStore);
-
   const { item } = useParams();
 
   const person = SOs_and_Credits_List.find(it => it.person === item);
@@ -33,9 +24,7 @@ export default function Page4SubItemExample() {
   if (isNullUndefined(person)) {
     return (
       <React.Fragment>
-        <Helmet>
-          <title>{TITLE + ' | Page 4 Sub-item Example '}</title>
-        </Helmet>
+        <title>{TITLE + ' | Page 4 Sub-item Example '}</title>
         <div className="container is-fluid">
           <div className={'flex-row-container'}>
             <div className={'flex-container-child-item center-align-content'}>
@@ -46,7 +35,7 @@ export default function Page4SubItemExample() {
           <div>
             <a
               className="button is-info"
-              onClick={(e) => {
+              onClick={e => {
                 e.preventDefault();
                 appNavigation.navigateTo(AppRoutes.PAGE4);
               }}
@@ -62,10 +51,8 @@ export default function Page4SubItemExample() {
 
   return (
     <React.Fragment>
-      <Helmet>
-        <title>{TITLE + ' | Page 4 Sub-item Example '}</title>
-      </Helmet>
-      <HeaderMenuNavigation appStore={appStore} />
+      <title>{TITLE + ' | Page 4 Sub-item Example '}</title>
+      <HeaderMenuNavigation />
 
       <div className="container is-fluid">
         <div className={'flex-row-container'}>
@@ -79,10 +66,7 @@ export default function Page4SubItemExample() {
             <div className="card">
               <div className="card-image">
                 <figure className="image is-4by3">
-                  <img
-                    src={imagePlaceholder}
-                    alt="Placeholder image"
-                  />{' '}
+                  <img src={imagePlaceholder} alt="Placeholder image" />{' '}
                 </figure>
               </div>
               <div className="card-content">
@@ -129,7 +113,7 @@ export default function Page4SubItemExample() {
         <div>
           <a
             className="button is-info"
-            onClick={(e) => {
+            onClick={e => {
               e.preventDefault();
               appNavigation.navigateTo(AppRoutes.PAGE4);
             }}

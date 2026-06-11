@@ -5,51 +5,32 @@
  * LinkedIn @_ https://linkedin.com/in/kaybarax
  */
 
-import React from 'react';
-import Snackbar from '@material-ui/core/Snackbar';
-import MuiAlert, { AlertProps } from '@material-ui/lab/Alert';
-import { makeStyles } from '@material-ui/core/styles';
-import { NotificationAlert } from './notification-utils';
+import { useNotificationStore } from './notifications-controller';
 
-function Alert(props: AlertProps) {
-  return <MuiAlert elevation={6} variant="filled" {...props} />;
-}
+const NOTIFICATION_COLOR_CLASSES = {
+  error: 'is-danger',
+  success: 'is-success',
+  warning: 'is-warning',
+  info: 'is-info',
+} as const;
 
-const useStyles = makeStyles(theme => ({
-  root: {
-    width: '100%',
-    '& > * + *': {
-      marginTop: theme.spacing(2),
-    },
-  },
-}));
+/**
+ * Renders the global notification alert as a Bulma notification.
+ * Mount once at the app entry; trigger via notificationCallback.
+ */
+export default function AppNotificationAlert() {
+  const { alert, message, type, position, dismiss } = useNotificationStore();
 
-export default function AppNotificationAlert(props: NotificationAlert) {
-  console.log('AppNotificationAlert props', props);
+  if (!alert) return null;
 
-  const { alert, message, duration, position } = props;
-  const classes = useStyles();
-  const [open, setOpen] = React.useState(alert || false);
-
-  const handleClose = () => {
-    setOpen(false);
-  };
+  const colorClass = NOTIFICATION_COLOR_CLASSES[type as keyof typeof NOTIFICATION_COLOR_CLASSES] ?? 'is-info';
 
   return (
-    <div className={classes.root}>
-      <Snackbar
-        open={open}
-        autoHideDuration={duration || 4000}
-        onClose={handleClose}
-        anchorOrigin={{
-          vertical: position || 'bottom',
-          horizontal: 'center',
-        }}
-      >
-        <Alert onClose={handleClose} severity={'info'}>
-          {message || 'This is an alert message!'}
-        </Alert>
-      </Snackbar>
+    <div className={`app-notification ${position === 'bottom' ? 'app-notification-bottom' : 'app-notification-top'}`}>
+      <div className={`notification ${colorClass}`} role="alert">
+        <button className="delete" aria-label="dismiss notification" onClick={dismiss}></button>
+        {message}
+      </div>
     </div>
   );
 }

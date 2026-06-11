@@ -11,20 +11,14 @@ import {
   SECURED_HOMEPAGE_EXAMPLE_VIEW_ROUTE,
   SECURED_PAGE2EXAMPLE_VIEW_ROUTE,
 } from './views-routes-declarations';
-import { appNavigation } from './app-navigation';
+import { appNavigation, AppRoutes } from './app-navigation';
 import authStore from '../stores/auth-store';
+import { useAppStore } from '../stores';
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export default function SecuredAppHeaderMenuNavigation(props: any) {
-  console.log('SecuredAppHeaderMenuNavigation props', props);
+export default function SecuredAppHeaderMenuNavigation() {
+  const user = useAppStore(state => state.user);
 
-  const { appStore } = props;
-  console.log('appStore -> ', appStore);
-
-  const { navigateTo } = appNavigation;
-  console.log('navigateTo', navigateTo);
-
-  const slug = '/' + window.location.href.split('/').pop();
+  const slug = '/' + window.location.pathname.split('/').pop();
 
   return (
     <div>
@@ -34,10 +28,10 @@ export default function SecuredAppHeaderMenuNavigation(props: any) {
             href={SECURED_HOMEPAGE_EXAMPLE_VIEW_ROUTE.path}
             onClick={event => {
               event.preventDefault();
-              // appNavigation.navigateToSecuredAppHomepageExample();
+              appNavigation.navigateTo(AppRoutes.SECURED_HOME);
             }}
           >
-            Hi! <span>👋️</span> Welcome {appStore?.user?.name}
+            Hi! <span>👋️</span> Welcome {user?.name}
           </a>
         </li>
         <li
@@ -48,7 +42,7 @@ export default function SecuredAppHeaderMenuNavigation(props: any) {
             href={SECURED_HOMEPAGE_EXAMPLE_VIEW_ROUTE.path}
             onClick={event => {
               event.preventDefault();
-              // appNavigation.navigateToSecuredAppHomepageExample();
+              appNavigation.navigateTo(AppRoutes.SECURED_HOME);
             }}
           >
             Secured App Home
@@ -62,7 +56,7 @@ export default function SecuredAppHeaderMenuNavigation(props: any) {
             href={SECURED_PAGE2EXAMPLE_VIEW_ROUTE.path}
             onClick={event => {
               event.preventDefault();
-              // appNavigation.navigateToSecuredPage2Example();
+              appNavigation.navigateTo(AppRoutes.SECURED_PAGE2);
             }}
           >
             Secured App Page 2

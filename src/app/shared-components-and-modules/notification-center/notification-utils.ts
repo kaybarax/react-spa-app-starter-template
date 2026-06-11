@@ -24,5 +24,4 @@ export interface NotificationAlert {
   type?: NotificationType;
   duration?: number;
   position?: 'top' | 'bottom';
-  activity?: unknown;
 }

@@ -8,80 +8,55 @@ import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 import { useAppStore, clearAllPersistedStores } from './stores';
 import { STORE_KEY_SUFFIX } from './actions-and-stores-data';
-
-export interface AuthenticationResult {
-  isAuthenticated: boolean;
-  error?: Error;
-}
+import { appNavigation, AppRoutes } from '../routing-and-navigation/app-navigation';
 
 export interface AuthState {
   isAuthenticated: boolean;
-  checkAuthentication: () => Promise<boolean>;
+  checkAuthentication: () => boolean;
   login: () => void;
   logout: () => void;
 }
 
 export const useAuthStore = create<AuthState>()(
   persist(
-    (set) => ({
+    (set, get) => ({
       isAuthenticated: false,
-      checkAuthentication: async () => {
-        try {
-          // TODO: Replace with actual authentication logic
-          // Example implementation would check a token, session, or user data
-          const isAuthenticated = true;
-          set({ isAuthenticated });
-          return isAuthenticated;
-        } catch (error) {
-          console.error('Authentication check failed:', error);
-          set({ isAuthenticated: false });
-          return false;
-        }
+      checkAuthentication: () => {
+        // Authenticated when a login has happened and the logged-in user
+        // is still present in the app store. Replace with a token/session
+        // check when you hook up a real authentication backend.
+        const isAuthenticated = get().isAuthenticated && useAppStore.getState().user !== null;
+        set({ isAuthenticated });
+        return isAuthenticated;
       },
       login: () => {
-        try {
-          // TODO: Implement login logic and navigation
-          set({ isAuthenticated: true });
-          console.log('User logged in successfully');
-          // appNavigation.navigateToSecuredAppHomepageExample();
-        } catch (error) {
-          console.error('Login failed:', error);
-        }
+        set({ isAuthenticated: true });
+        appNavigation.navigateTo(AppRoutes.SECURED_HOME);
       },
       logout: () => {
-        try {
-          // Clear user data
-          useAppStore.setState({ user: null });
-
-          // Clean up storage
-          clearAllPersistedStores();
-
-          set({ isAuthenticated: false });
-
-          // TODO: Add navigation after logout
-          // appNavigation.navigateToLoginAndRegistration();
-
-          console.log('User logged out successfully');
-        } catch (error) {
-          console.error('Logout failed:', error);
-        }
-      }
+        // Clear user data and all persisted working state
+        useAppStore.setState({ user: null });
+        clearAllPersistedStores();
+        set({ isAuthenticated: false });
+        appNavigation.navigateTo(AppRoutes.LOGIN);
+      },
     }),
     {
       name: `auth-store-${STORE_KEY_SUFFIX}`,
-    }
-  )
+    },
+  ),
 );
 
+/**
+ * Singleton facade over the auth store, for use outside React components
+ * (controllers, navigation logic).
+ */
 export class AuthStore {
   private static instance: AuthStore | null = null;
   static namespace = 'AuthStore_' + STORE_KEY_SUFFIX;
 
   private constructor() {}
 
-  /**
-   * Get the singleton instance of AuthStore
-   */
   public static getInstance(): AuthStore {
     if (!AuthStore.instance) {
       AuthStore.instance = new AuthStore();
@@ -89,43 +64,16 @@ export class AuthStore {
     return AuthStore.instance;
   }
 
-  /**
-   * Check if the user is authenticated
-   */
-  async isAuthenticated(): Promise<boolean> {
+  isAuthenticated(): boolean {
     return useAuthStore.getState().checkAuthentication();
   }
 
-  /**
-   * Handle user login
-   */
   handleLogin(): void {
     useAuthStore.getState().login();
   }
 
-  /**
-   * Handle user logout
-   */
   handleLogout(): void {
     useAuthStore.getState().logout();
-  }
-
-  /**
-   * Persist auth store to local storage
-   * This is called automatically by zustand middleware on store changes
-   */
-  persistToLocalStorage(): void {
-    // No need to implement this method as zustand handles persistence automatically
-    console.log('Auth store persistence is handled by zustand middleware');
-  }
-
-  /**
-   * Load auth store from local storage
-   * This is called automatically by zustand middleware on initialization
-   */
-  loadFromLocalStorage(): void {
-    // No need to implement this method as zustand handles persistence automatically
-    console.log('Auth store loading is handled by zustand middleware');
   }
 }
 

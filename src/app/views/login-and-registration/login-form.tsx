@@ -6,96 +6,67 @@
  */
 
 import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
 import { isEmptyString } from '../../util/util';
-import { NotificationAlert } from '../../shared-components-and-modules/notification-center/notification-utils';
-import { AppState } from '../../stores';
-import TextField from '@material-ui/core/TextField';
-import { textValueChanged } from '../../util/react-web-forms-data-collection-utils.tsx';
 import { handleLogin } from '../../controllers/login-controller';
-import authStore from '../../stores/auth-store';
 
-interface LoginFormProps {
-  loginModel: any;
-  notificationAlert: NotificationAlert;
-  appStore: AppState;
-}
+export default function LoginForm() {
+  const [usernameOrEmail, setUsernameOrEmail] = React.useState('');
+  const [password, setPassword] = React.useState('');
+  const [submitPressed, setSubmitPressed] = React.useState(false);
 
-export default function LoginForm(props: LoginFormProps) {
-  const { loginModel, notificationAlert, appStore } = props;
-  console.log('LoginForm loginModel', loginModel, 'notificationAlert', notificationAlert, 'appStore', appStore);
+  const usernameOrEmailMissing = submitPressed && isEmptyString(usernameOrEmail);
+  const passwordMissing = submitPressed && isEmptyString(password);
 
-  const [submit_pressed, set_press_submit] = React.useState(false);
-  console.log('submit_pressed', submit_pressed, 'set_press_submit', set_press_submit);
-
-  const useStyles = makeStyles(theme => ({
-    root: {
-      '& > *': {
-        margin: theme.spacing(1),
-        width: '25ch',
-      },
-    },
-  }));
-
-  const classes = useStyles();
-
-  const isValidFormData = () => {
-    let validForm = true;
-    set_press_submit(false); //assume not pressed
-
-    if (isEmptyString(loginModel['usernameOrEmail'])) {
-      validForm = false;
-      set_press_submit(true);
-      return validForm;
+  const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setSubmitPressed(true);
+    if (isEmptyString(usernameOrEmail) || isEmptyString(password)) {
+      return;
     }
-    if (isEmptyString(loginModel['password'])) {
-      validForm = false;
-      set_press_submit(true);
-      return validForm;
-    }
-
-    return validForm;
+    handleLogin({ usernameOrEmail, password });
   };
 
   return (
-    <React.Fragment>
-      <form className={classes.root} noValidate autoComplete="off">
-        {submit_pressed && isEmptyString(loginModel.usernameOrEmail) && (
-          <small style={{ color: 'red' }}> * This field is required.</small>
-        )}
-        <br />
-        <TextField
-          id="username-or-email"
-          label="Username/Email"
-          type={'text'}
-          onChange={e => textValueChanged(loginModel, e.target.value, 'usernameOrEmail')}
-        />
-        <br />
-        {submit_pressed && isEmptyString(loginModel.password) && (
-          <small style={{ color: 'red' }}> * This field is required.</small>
-        )}
-        <br />
-        <TextField
-          id="password"
-          label="Password"
-          type={'password'}
-          onChange={e => textValueChanged(loginModel, e.target.value, 'password')}
-        />
-        <br />
-        <button
-          color="primary"
-          type={'submit'}
-          onClick={e => {
-            e.preventDefault();
-            if (!isValidFormData()) {
-              return;
-            }
-            handleLogin(loginModel, notificationAlert, appStore, authStore);
-          }}
-        >
-          Login
-        </button>
-      </form>
-    </React.Fragment>
+    <form className="login-registration-form" noValidate autoComplete="off" onSubmit={onSubmit}>
+      <div className="field">
+        <label className="label" htmlFor="username-or-email">
+          Username/Email
+        </label>
+        <div className="control">
+          <input
+            id="username-or-email"
+            className={`input ${usernameOrEmailMissing ? 'is-danger' : ''}`}
+            type="text"
+            value={usernameOrEmail}
+            onChange={e => setUsernameOrEmail(e.target.value)}
+          />
+        </div>
+        {usernameOrEmailMissing && <p className="help is-danger">* This field is required.</p>}
+      </div>
+
+      <div className="field">
+        <label className="label" htmlFor="password">
+          Password
+        </label>
+        <div className="control">
+          <input
+            id="password"
+            className={`input ${passwordMissing ? 'is-danger' : ''}`}
+            type="password"
+            value={password}
+            onChange={e => setPassword(e.target.value)}
+          />
+        </div>
+        {passwordMissing && <p className="help is-danger">* This field is required.</p>}
+      </div>
+
+      <div className="field">
+        <div className="control">
+          <button className="button is-primary" type="submit">
+            Login
+          </button>
+        </div>
+      </div>
+    </form>
   );
 }

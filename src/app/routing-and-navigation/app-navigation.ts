@@ -5,6 +5,7 @@
  * LinkedIn @_ https://linkedin.com/in/kaybarax
  */
 import { isEmptyObject, isNullUndefined } from '../util/util';
+import { useAppStore } from '../stores';
 import {
   APP_DEV_MOCKS_VIEW_ROUTE,
   DEFAULT_VIEW_ROUTE,
@@ -12,6 +13,7 @@ import {
   PAGE2EXAMPLE_VIEW_ROUTE,
   PAGE3EXAMPLE_VIEW_ROUTE,
   PAGE4EXAMPLE_VIEW_ROUTE,
+  PAGE5_SERVER_DATA_EXAMPLE_VIEW_ROUTE,
   SECURED_HOMEPAGE_EXAMPLE_VIEW_ROUTE,
   SECURED_PAGE2EXAMPLE_VIEW_ROUTE,
 } from './views-routes-declarations';
@@ -29,15 +31,6 @@ export interface RouterNavigator {
   match: unknown;
 }
 
-/** Interface for navigation store */
-export interface NavigationStore {
-  currentNavigationTrailIndex: number;
-  navigationTrail: string[];
-  navigatedFrom: string | null;
-  navigatedTo: string | null;
-  [key: string]: unknown;
-}
-
 /** Type for navigation parameters */
 export type NavParams = Record<string, unknown> | null;
 
@@ -47,6 +40,7 @@ export const AppRoutes = {
   PAGE2: PAGE2EXAMPLE_VIEW_ROUTE.path,
   PAGE3: PAGE3EXAMPLE_VIEW_ROUTE.path,
   PAGE4: PAGE4EXAMPLE_VIEW_ROUTE.path,
+  PAGE5: PAGE5_SERVER_DATA_EXAMPLE_VIEW_ROUTE.path,
   LOGIN: LOGIN_AND_REGISTRATION_VIEW_ROUTE.path,
   SECURED_HOME: SECURED_HOMEPAGE_EXAMPLE_VIEW_ROUTE.path,
   SECURED_PAGE2: SECURED_PAGE2EXAMPLE_VIEW_ROUTE.path,
@@ -65,15 +59,11 @@ export interface IAppNavigation {
   getNavigatedTo(): string | null;
   getNavigatedFrom(): string | null;
   getNavigator(): RouterNavigator | null;
-  getNavStore(): NavigationStore | null;
 
   setNavigatedToParams(params: NavParams): void;
   setNavigatedTo(route: string | null): void;
   setNavigatedFrom(route: string | null): void;
   setNavigator(navigator: RouterNavigator | null): void;
-  setNavStore(store: NavigationStore | null): void;
-
-  isInternalLogout(): boolean;
 }
 
 export class AppNavigation implements IAppNavigation {
@@ -84,10 +74,6 @@ export class AppNavigation implements IAppNavigation {
   private navigatedTo: string | null = null;
   private navigatedFrom: string | null = null;
   private navigator: RouterNavigator | null = null;
-  private navStore: NavigationStore | null = null;
-
-  // Global properties
-  private internalLogout = false;
 
   /**
    * Private constructor to prevent direct instantiation
@@ -143,10 +129,8 @@ export class AppNavigation implements IAppNavigation {
       });
     }
 
-    // Track navigation history if store exists
-    if (this.navStore) {
-      this.updateNavigationTrail(goingBack);
-    }
+    // Track navigation history in the app store
+    this.updateNavigationTrail(goingBack);
   }
 
   public navigateTo(routePath: string, navParams: NavParams = null): void {
@@ -154,23 +138,35 @@ export class AppNavigation implements IAppNavigation {
   }
 
   private updateNavigationTrail(goingBack: boolean): void {
-    if (!this.navStore) return;
+    const navigatedTo = this.navigatedTo;
+    const navigatedFrom = this.navigatedFrom;
 
-    if (goingBack) {
-      const goTo = this.navStore.currentNavigationTrailIndex - 1;
-      if (goTo >= 0) {
-        this.navStore.currentNavigationTrailIndex = goTo;
+    useAppStore.setState(state => {
+      const { navigationTrail, currentNavigationTrailIndex } = state.navStore;
+
+      if (goingBack) {
+        const goTo = Math.max(currentNavigationTrailIndex - 1, 0);
+        return {
+          navStore: {
+            ...state.navStore,
+            navigationTrail: navigationTrail.filter((_, index) => index !== goTo),
+            currentNavigationTrailIndex: goTo,
+            navigatedFrom,
+          },
+        };
       }
-      this.navStore.navigationTrail.splice(this.navStore.currentNavigationTrailIndex, 1);
-      this.navStore.navigatedFrom = this.navigatedFrom;
-    } else {
-      if (this.navigatedTo) {
-        this.navStore.navigationTrail.push(this.navigatedTo);
-      }
-      this.navStore.currentNavigationTrailIndex = this.navStore.navigationTrail.length - 1;
-      this.navStore.navigatedTo = this.navigatedTo;
-      this.navStore.navigatedFrom = this.navigatedFrom;
-    }
+
+      const trail = navigatedTo ? [...navigationTrail, navigatedTo] : [...navigationTrail];
+      return {
+        navStore: {
+          ...state.navStore,
+          navigationTrail: trail,
+          currentNavigationTrailIndex: trail.length - 1,
+          navigatedTo,
+          navigatedFrom,
+        },
+      };
+    });
   }
 
   // Getters
@@ -190,14 +186,6 @@ export class AppNavigation implements IAppNavigation {
     return this.navigator;
   }
 
-  public getNavStore(): NavigationStore | null {
-    return this.navStore;
-  }
-
-  public isInternalLogout(): boolean {
-    return this.internalLogout;
-  }
-
   // Setters
   public setNavigatedToParams(params: NavParams): void {
     this.navigatedToParams = params;
@@ -213,10 +201,6 @@ export class AppNavigation implements IAppNavigation {
 
   public setNavigator(navigator: RouterNavigator | null): void {
     this.navigator = navigator;
-  }
-
-  public setNavStore(store: NavigationStore | null): void {
-    this.navStore = store;
   }
 }
 
