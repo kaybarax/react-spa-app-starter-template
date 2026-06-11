@@ -7,10 +7,12 @@
 
 import notFoundImage from '../media/images/_404_.png';
 import { FC } from 'react';
+import { TITLE } from '../app-config';
 
 const NotFound: FC = () => {
   return (
     <div className="container is-fluid">
+      <title>{TITLE + ' | Page Not Found'}</title>
       <div className={'flex-row-container'}>
         <div className={'flex-container-child-item center-align-content'}>
           <h1 className="title">Oops! Sorry, Page Not Found</h1>

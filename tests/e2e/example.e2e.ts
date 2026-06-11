@@ -22,6 +22,29 @@ test('navigates between public pages via the header menu', async ({ page }) => {
   await expect(page.getByText('Page 5 Example : Server data, the TanStack Query way!')).toBeVisible();
 });
 
+test('updates the browser tab title on every navigation (React 19 native <title>)', async ({ page }) => {
+  await page.goto('/');
+  await expect(page).toHaveTitle('React JS SPA App Template Framework | Page 1');
+
+  await page.locator('#nav-\\/page-2-example a').click();
+  await expect(page).toHaveTitle('React JS SPA App Template Framework | Page 2');
+
+  await page.locator('#nav-\\/page-3-example a').click();
+  await expect(page).toHaveTitle('React JS SPA App Template Framework | Page 3');
+
+  await page.locator('#nav-\\/page-4-example a').click();
+  await expect(page).toHaveTitle('React JS SPA App Template Framework | Page 4');
+
+  await page.locator('#nav-\\/page-5-server-data-example a').click();
+  await expect(page).toHaveTitle('React JS SPA App Template Framework | Page 5');
+
+  await page.getByText('Log In').click();
+  await expect(page).toHaveTitle('React JS SPA App Template Framework | Login');
+
+  await page.goto('/no-such-page');
+  await expect(page).toHaveTitle('React JS SPA App Template Framework | Page Not Found');
+});
+
 test('redirects unauthenticated visits to secured pages to the login view', async ({ page }) => {
   await page.goto('/secured-app-home');
   await expect(page).toHaveURL(/login-and-registration/);
