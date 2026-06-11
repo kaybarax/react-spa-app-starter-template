@@ -1,8 +1,8 @@
 /**
- * @authored by Kaybarax
- * Twitter @_ https://twitter.com/Kaybarax
- * Github @_ https://github.com/Kaybarax
- * LinkedIn @_ https://linkedin.com/in/kaybarax
+ * @authored by Kevin
+ * Twitter @_ https://x.com/kaybarax
+ * Github @_ https://github.com/kaybarax
+ * LinkedIn @_ https://linkedin.com/in/kevin-barasa
  */
 
 interface Link {
@@ -47,16 +47,16 @@ export const SOs_and_Credits_List: CreditPerson[] = [
     ],
   },
   {
-    person: 'Kaybarax',
+    person: 'Kevin',
     attribution: 'Creator of this startup template.',
     links: [
       {
         site: 'Twitter',
-        link: 'https://twitter.com/Kaybarax',
+        link: 'https://x.com/kaybarax',
       },
       {
         site: 'Linked In',
-        link: 'https://linkedin.com/in/kaybrax',
+        link: 'https://linkedin.com/in/kevin-barasa',
       },
     ],
   },

@@ -1,8 +1,8 @@
 /**
- * @authored by Kaybarax
- * Twitter @_ https://twitter.com/Kaybarax
- * Github @_ https://github.com/Kaybarax
- * LinkedIn @_ https://linkedin.com/in/kaybarax
+ * @authored by Kevin
+ * Twitter @_ https://x.com/kaybarax
+ * Github @_ https://github.com/kaybarax
+ * LinkedIn @_ https://linkedin.com/in/kevin-barasa
  */
 
 import React from 'react';
@@ -57,18 +57,18 @@ export default function Page4Example() {
             <strong>Let's connect:</strong>
             <br />
             LinkedIn:{' '}
-            <a href={'https://linkedin.com/in/kaybarax'} target={'_blank'}>
-              Kevin Barasa (kaybarax)
+            <a href={'https://linkedin.com/in/kevin-barasa'} target={'_blank'}>
+              Kevin Barasa
             </a>
             <br />
             Github:{' '}
-            <a href={'https://github.com/Kaybarax'} target={'_blank'}>
-              Kaybarax
+            <a href={'https://github.com/kaybarax'} target={'_blank'}>
+              kaybarax
             </a>
             <br />
             Twitter:{' '}
-            <a href={'https://twitter.com/Kaybarax'} target={'_blank'}>
-              Kaybarax
+            <a href={'https://x.com/kaybarax'} target={'_blank'}>
+              kaybarax
             </a>
           </p>
 

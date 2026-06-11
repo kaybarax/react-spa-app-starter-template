@@ -128,11 +128,11 @@ Mobile app development with React Native and Android, and I have, and can as wel
 and technologies like Python, C++, C#, Dart, NoSQL Dbs, and AWS cloud.
 
 #### Let's connect:
-LinkedIn: [Kevin Barasa (kaybarax)](https://www.linkedin.com/in/kaybarax/)
+LinkedIn: [Kevin Barasa](https://linkedin.com/in/kevin-barasa)
 
-Github: [Kaybarax](https://github.com/Kaybarax)
+Github: [kaybarax](https://github.com/kaybarax)
 
-Twitter: [Kaybarax](https://twitter.com/Kaybarax)
+Twitter: [kaybarax](https://x.com/kaybarax)
 
 #### Shout out's and credits:
 [Daishi Kato](https://twitter.com/dai_shi) and the [Poimandres collective](https://github.com/pmndrs) —

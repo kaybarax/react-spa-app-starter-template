@@ -1,8 +1,8 @@
 /**
- * @authored by Kaybarax
- * Twitter @_ https://twitter.com/Kaybarax
- * Github @_ https://github.com/Kaybarax
- * LinkedIn @_ https://linkedin.com/in/kaybarax
+ * @authored by Kevin
+ * Twitter @_ https://x.com/kaybarax
+ * Github @_ https://github.com/kaybarax
+ * LinkedIn @_ https://linkedin.com/in/kevin-barasa
  */
 
 import { JSX } from 'react';
