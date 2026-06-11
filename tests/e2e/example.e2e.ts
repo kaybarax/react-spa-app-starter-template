@@ -24,22 +24,29 @@ test('navigates between public pages via the header menu', async ({ page }) => {
 
 test('updates the browser tab title on every navigation (React 19 native <title>)', async ({ page }) => {
   await page.goto('/');
-  await expect(page).toHaveTitle('React JS SPA App Template Framework | Page 1');
+  await expect(page).toHaveTitle("React JS SPA App Template Framework | Page 1 — Let's Start Here!");
 
   await page.locator('#nav-\\/page-2-example a').click();
-  await expect(page).toHaveTitle('React JS SPA App Template Framework | Page 2');
+  await expect(page).toHaveTitle('React JS SPA App Template Framework | Page 2 — The Design Philosophy');
 
   await page.locator('#nav-\\/page-3-example a').click();
-  await expect(page).toHaveTitle('React JS SPA App Template Framework | Page 3');
+  await expect(page).toHaveTitle('React JS SPA App Template Framework | Page 3 — All Batteries Included');
 
   await page.locator('#nav-\\/page-4-example a').click();
-  await expect(page).toHaveTitle('React JS SPA App Template Framework | Page 4');
+  await expect(page).toHaveTitle('React JS SPA App Template Framework | Page 4 — About Me, S/Os & Credits');
 
   await page.locator('#nav-\\/page-5-server-data-example a').click();
-  await expect(page).toHaveTitle('React JS SPA App Template Framework | Page 5');
+  await expect(page).toHaveTitle('React JS SPA App Template Framework | Page 5 — Server Data with TanStack Query');
 
-  await page.getByText('Log In').click();
+  // Dynamic title: the credits detail page titles itself after the person
+  await page.goto('/page-4-example/Kevin');
+  await expect(page).toHaveTitle('React JS SPA App Template Framework | Credits — Kevin');
+
+  // Dynamic title: the login view's title follows the active form
+  await page.goto('/login-and-registration');
   await expect(page).toHaveTitle('React JS SPA App Template Framework | Login');
+  await page.locator('.login-action span', { hasText: 'Sign Up' }).click();
+  await expect(page).toHaveTitle('React JS SPA App Template Framework | Sign Up');
 
   await page.goto('/no-such-page');
   await expect(page).toHaveTitle('React JS SPA App Template Framework | Page Not Found');

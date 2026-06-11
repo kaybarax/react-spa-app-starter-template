@@ -24,7 +24,7 @@ export default function Page4SubItemExample() {
   if (isNullUndefined(person)) {
     return (
       <React.Fragment>
-        <title>{TITLE + ' | Page 4 Sub-item Example '}</title>
+        <title>{TITLE + ' | Credits — No Details'}</title>
         <div className="container is-fluid">
           <div className={'flex-row-container'}>
             <div className={'flex-container-child-item center-align-content'}>
@@ -51,7 +51,7 @@ export default function Page4SubItemExample() {
 
   return (
     <React.Fragment>
-      <title>{TITLE + ' | Page 4 Sub-item Example '}</title>
+      <title>{TITLE + ' | Credits — ' + person?.person}</title>
       <HeaderMenuNavigation />
 
       <div className="container is-fluid">

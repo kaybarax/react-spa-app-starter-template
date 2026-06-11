@@ -32,7 +32,7 @@ export default function Page5ServerDataExample() {
 
   return (
     <React.Fragment>
-      <title>{TITLE + ' | Page 5'}</title>
+      <title>{TITLE + ' | Page 5 — Server Data with TanStack Query'}</title>
       <HeaderMenuNavigation />
 
       <div className={'flex-row-container'}>

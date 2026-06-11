@@ -7,13 +7,14 @@
 
 import { FC } from 'react';
 import SafeComponentWrapper from '../app/safe-component-wrapper';
+import { TITLE } from '../app/app-config';
 
 export const AppDevScratchPadPath = '/app-dev-scratch-pad';
 
 const AppDevScratchPad: FC = () => {
   return (
     <SafeComponentWrapper>
-      <title>{' Mock Stuff Page '}</title>
+      <title>{TITLE + ' | Dev Scratch Pad'}</title>
 
       <div className="container is-fluid">
         <div className={'flex-row-container'}>

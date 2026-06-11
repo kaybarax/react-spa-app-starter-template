@@ -19,7 +19,7 @@ export default function Page2Example() {
 
   return (
     <React.Fragment>
-      <title>{TITLE + ' | Page 2'}</title>
+      <title>{TITLE + ' | Page 2 — The Design Philosophy'}</title>
       <HeaderMenuNavigation />
 
       <div className={'flex-row-container'}>

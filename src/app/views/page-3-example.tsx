@@ -19,7 +19,7 @@ export default function Page3Example() {
 
   return (
     <React.Fragment>
-      <title>{TITLE + ' | Page 3'}</title>
+      <title>{TITLE + ' | Page 3 — All Batteries Included'}</title>
       <HeaderMenuNavigation />
 
       <div className={'flex-row-container'}>

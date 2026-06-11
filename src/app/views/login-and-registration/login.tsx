@@ -33,9 +33,13 @@ export default function Login() {
   const showSignUp = pageAction === LOGIN_PAGE_ACTIONS.SIGN_UP;
   const showResetPassword = pageAction === LOGIN_PAGE_ACTIONS.RESET_PASSWORD;
 
+  // The tab title follows the active form — React 19 keeps the hoisted
+  // <title> in sync with renders
+  const pageTitle = showSignUp ? 'Sign Up' : showResetPassword ? 'Reset Password' : 'Login';
+
   return (
     <React.Fragment>
-      <title>{TITLE + ' | Login'}</title>
+      <title>{TITLE + ' | ' + pageTitle}</title>
 
       <div>
         <div className={'flex-row-container'}>

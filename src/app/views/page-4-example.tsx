@@ -29,7 +29,7 @@ export default function Page4Example() {
 
   return (
     <React.Fragment>
-      <title>{TITLE + ' | Page 4'}</title>
+      <title>{TITLE + ' | Page 4 — About Me, S/Os & Credits'}</title>
       <HeaderMenuNavigation />
 
       <div className={'flex-row-container'}>

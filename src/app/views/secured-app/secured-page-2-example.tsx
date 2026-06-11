@@ -12,7 +12,7 @@ import SecuredAppHeaderMenuNavigation from '../../routing-and-navigation/secured
 export function SecuredPage2Example() {
   return (
     <React.Fragment>
-      <title>{TITLE + ' | Secured Page 2'}</title>
+      <title>{TITLE + ' | Secured App Page 2'}</title>
 
       <SecuredAppHeaderMenuNavigation />
 
