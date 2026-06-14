@@ -6,6 +6,7 @@ import {
   isNullUndefined,
   isTrue,
   makeId,
+  objectAHasSameKeysAsObjectB,
   objectInstanceProvider,
   objectKeyExists,
 } from './util';
@@ -79,6 +80,22 @@ describe('util', () => {
       const id = makeId(12);
       expect(id).toHaveLength(12);
       expect(id).toMatch(/^[A-Za-z0-9]+$/);
+    });
+  });
+
+  describe('objectAHasSameKeysAsObjectB', () => {
+    it('returns true for objects with the same keys', () => {
+      expect(objectAHasSameKeysAsObjectB({ a: 1, b: 2 }, { a: 3, b: 4 })).toBe(true);
+      expect(objectAHasSameKeysAsObjectB({}, {})).toBe(true);
+    });
+
+    it('returns false when a key in objA is missing from objB', () => {
+      expect(objectAHasSameKeysAsObjectB({ a: 1, b: 2 }, { a: 1 })).toBe(false);
+    });
+
+    it('returns false when key counts differ even if keys otherwise match', () => {
+      expect(objectAHasSameKeysAsObjectB({ a: 1 }, { a: 1, b: 2 })).toBe(false);
+      expect(objectAHasSameKeysAsObjectB({ a: 1, b: 2 }, { a: 1 })).toBe(false);
     });
   });
 });
