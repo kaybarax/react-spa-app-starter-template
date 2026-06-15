@@ -16,5 +16,15 @@ export default function App() {
     appIndexedDb();
   }, []);
 
-  return <AppEntry />;
+  return (
+    <>
+      <span
+        className="tag is-success is-light"
+        style={{ position: 'fixed', bottom: '0.5rem', right: '0.5rem', zIndex: 9999 }}
+      >
+        Starter ready
+      </span>
+      <AppEntry />
+    </>
+  );
 }
