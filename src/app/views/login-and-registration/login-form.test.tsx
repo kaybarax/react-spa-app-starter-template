@@ -1,10 +1,12 @@
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import LoginForm from './login-form';
-import { handleLogin } from '../../controllers/login-controller';
+import { ResetPasswordForm } from './reset-password-form';
+import { handleLogin, handleResetPassword } from '../../controllers/login-controller';
 
 vi.mock('../../controllers/login-controller', () => ({
   handleLogin: vi.fn(),
+  handleResetPassword: vi.fn(),
 }));
 
 describe('LoginForm', () => {
@@ -39,5 +41,27 @@ describe('LoginForm', () => {
 
     expect(screen.queryByText('* This field is required.')).not.toBeInTheDocument();
     expect(handleLogin).toHaveBeenCalledWith({ usernameOrEmail: 'kevin@example.com', password: 'secret' });
+  });
+});
+
+describe('ResetPasswordForm', () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+  });
+
+  it('renders the email input and Submit button', () => {
+    render(<ResetPasswordForm />);
+    expect(screen.getByLabelText('Enter your email address')).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'Submit' })).toBeInTheDocument();
+  });
+
+  it('calls handleResetPassword on submit with typed email', async () => {
+    const user = userEvent.setup();
+    render(<ResetPasswordForm />);
+
+    await user.type(screen.getByLabelText('Enter your email address'), 'kevin@example.com');
+    await user.click(screen.getByRole('button', { name: 'Submit' }));
+
+    expect(handleResetPassword).toHaveBeenCalledTimes(1);
   });
 });
