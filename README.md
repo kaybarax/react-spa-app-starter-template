@@ -146,3 +146,16 @@ Thanks a lot dude for your tutorial I came across on [@Medium and Dev.to](https:
 
 
 #### !! Have fun bringing your web app to life! Cheers !!
+
+---
+
+### HEPA validation
+
+This README was touched during a **DeepSeek cloud worker** and **DeepSeek cloud reviewer** live stress-test run (lane `cli-fake`).
+
+| Role | Provider |
+| --- | --- |
+| Worker | DeepSeek Cloud |
+| Reviewer | DeepSeek Cloud |
+
+HEPA lane: `lane-cli-fake` · Date: 2026-06-18
