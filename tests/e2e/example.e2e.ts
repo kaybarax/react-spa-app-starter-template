@@ -1,9 +1,11 @@
 import { test, expect } from '@playwright/test';
 
-test('shows page 1 with the app title', async ({ page }) => {
+test('shows page 1 with the app title and starter status badge', async ({ page }) => {
   await page.goto('/');
   await expect(page).toHaveTitle(/Page 1/);
   await expect(page.getByText("Page 1 Example : Let's start here!")).toBeVisible();
+  await expect(page.locator('#starter-status-badge')).toBeVisible();
+  await expect(page.locator('#starter-status-badge')).toHaveText('Starter template ready');
 });
 
 test('navigates between public pages via the header menu', async ({ page }) => {

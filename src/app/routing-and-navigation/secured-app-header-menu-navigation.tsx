@@ -74,6 +74,21 @@ export default function SecuredAppHeaderMenuNavigation() {
           </a>
         </li>
       </ul>
+      <span
+        id="starter-status-badge"
+        style={{
+          float: 'right',
+          color: '#fff',
+          backgroundColor: '#48c774',
+          padding: '4px 10px',
+          fontSize: '0.75rem',
+          lineHeight: '2rem',
+          borderRadius: '4px',
+          margin: '8px 16px',
+        }}
+      >
+        Starter template ready
+      </span>
     </div>
   );
 }
