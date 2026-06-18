@@ -6,6 +6,8 @@ Get up and running quickly, with building your React JS SPA web application.
 
 ## The stack
 
+> HEPA live validation exercised the app starter.
+
 | Concern               | Powered by                                                  |
 | --------------------- | ----------------------------------------------------------- |
 | UI library            | React 19                                                     |
