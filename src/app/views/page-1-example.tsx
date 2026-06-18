@@ -25,6 +25,7 @@ export default function Page1Example() {
       <div className={'flex-row-container'}>
         <div className={'flex-container-child-item center-align-content'}>
           <h5 className="title is-5">Page 1 Example : Let's start here!</h5>
+          <span className="tag is-small is-info mt-2">Starter template ready</span>
         </div>
       </div>
 

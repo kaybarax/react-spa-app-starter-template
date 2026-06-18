@@ -1,5 +1,10 @@
 import { test, expect } from '@playwright/test';
 
+test('shows the starter template status badge on the home page', async ({ page }) => {
+  await page.goto('/');
+  await expect(page.getByText('Starter template ready')).toBeVisible();
+});
+
 test('shows page 1 with the app title', async ({ page }) => {
   await page.goto('/');
   await expect(page).toHaveTitle(/Page 1/);
