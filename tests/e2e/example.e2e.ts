@@ -4,6 +4,7 @@ test('shows page 1 with the app title', async ({ page }) => {
   await page.goto('/');
   await expect(page).toHaveTitle(/Page 1/);
   await expect(page.getByText("Page 1 Example : Let's start here!")).toBeVisible();
+  await expect(page.getByText('Starter template ready')).toBeVisible();
 });
 
 test('navigates between public pages via the header menu', async ({ page }) => {

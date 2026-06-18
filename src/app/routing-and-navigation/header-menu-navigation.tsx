@@ -47,6 +47,7 @@ export const HeaderMenuNavigation: FC = () => {
         <li>
           <a href={DEFAULT_VIEW_ROUTE.path} onClick={event => navigateOnClick(event, AppRoutes.DEFAULT)}>
             Hi! <span>👋️</span> RJSSASTF
+            <span style={{ backgroundColor: '#4CAF50', color: 'white', padding: '4px 8px', borderRadius: '4px', fontSize: '12px', marginLeft: '8px' }}>Starter template ready</span>
           </a>
         </li>
         {MENU_ENTRIES.map(entry => (
