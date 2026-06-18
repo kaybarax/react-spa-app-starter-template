@@ -46,7 +46,7 @@ export const HeaderMenuNavigation: FC = () => {
       <ul>
         <li>
           <a href={DEFAULT_VIEW_ROUTE.path} onClick={event => navigateOnClick(event, AppRoutes.DEFAULT)}>
-            Hi! <span>👋️</span> RJSSASTF
+            Hi! <span>👋️</span> RJSSASTF <span className="badge">Starter template ready</span>
           </a>
         </li>
         {MENU_ENTRIES.map(entry => (
