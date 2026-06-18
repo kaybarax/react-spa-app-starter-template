@@ -3,6 +3,7 @@
 Get up and running quickly, with building your React JS SPA web application.
 
 #### All batteries included like Angular — global state manager ([Zustand](https://github.com/pmndrs/zustand)) hooked to localStorage for seamless persistence of component data stores and offline facility; sound routing and navigation logic built on top of [React Router](https://reactrouter.com/); secured routes with a built-in auth guard; and [TanStack Query](https://tanstack.com/query/latest) pre-wired for the day a server comes into play.
+- HEPA Qwen capped live matrix validation: local worker and local reviewer completed. Run git diff --check. Do not include local file paths.
 
 ## The stack
 
