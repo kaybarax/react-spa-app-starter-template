@@ -42,6 +42,8 @@ And you are good to go!
 | `yarn test:coverage` | Unit tests with coverage report               |
 | `yarn test:e2e`      | Run the Playwright end-to-end tests           |
 
+- HEPA fleet live matrix Qwen validation: local worker and local reviewer completed. Run git diff --check.
+
 ## A brief system breakdown
 
 ### Let's start here!
