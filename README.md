@@ -44,6 +44,8 @@ And you are good to go!
 
 ## A brief system breakdown
 
+> HEPA live validation exercised the app starter.
+
 ### Let's start here!
 
 So you have an SPA web app that you want to build with React Js.
