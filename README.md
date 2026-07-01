@@ -146,3 +146,6 @@ Thanks a lot dude for your tutorial I came across on [@Medium and Dev.to](https:
 
 
 #### !! Have fun bringing your web app to life! Cheers !!
+
+### HEPA Local Stress Test
+Run `git diff --check` to validate that no whitespace or formatting issues exist locally. This is part of the HEPA stress validation process.
