@@ -146,3 +146,7 @@ Thanks a lot dude for your tutorial I came across on [@Medium and Dev.to](https:
 
 
 #### !! Have fun bringing your web app to life! Cheers !!
+
+### HEPA Hybrid Stress Validation
+
+This repository is used for HEPA hybrid stress testing. Run `git diff --check` to validate formatting.
