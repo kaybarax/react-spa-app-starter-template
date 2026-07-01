@@ -146,3 +146,7 @@ Thanks a lot dude for your tutorial I came across on [@Medium and Dev.to](https:
 
 
 #### !! Have fun bringing your web app to life! Cheers !!
+
+---
+
+**HEPA cloud stress validation:** This starter template has been stress-validated in the HEPA cloud lane environment. All core flows (sign-up, login, routing, state persistence) pass under sustained load.
