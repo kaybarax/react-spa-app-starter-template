@@ -42,6 +42,20 @@ And you are good to go!
 | `yarn test:coverage` | Unit tests with coverage report               |
 | `yarn test:e2e`      | Run the Playwright end-to-end tests           |
 
+## Local Validation
+
+Before opening a pull request, ensure the project builds locally:
+
+```bash
+yarn build
+```
+
+or
+
+```bash
+npm run build
+```
+
 ## A brief system breakdown
 
 ### Let's start here!
