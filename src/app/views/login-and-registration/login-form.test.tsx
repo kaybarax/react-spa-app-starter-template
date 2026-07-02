@@ -38,6 +38,37 @@ describe('LoginForm', () => {
     await user.click(screen.getByRole('button', { name: 'Login' }));
 
     expect(screen.queryByText('* This field is required.')).not.toBeInTheDocument();
-    expect(handleLogin).toHaveBeenCalledWith({ usernameOrEmail: 'kevin@example.com', password: 'secret' });
+    expect(handleLogin).toHaveBeenCalledWith(
+      { usernameOrEmail: 'kevin@example.com', password: 'secret' },
+      undefined,
+    );
+  });
+
+  it('forwards a redirectTo destination when provided as a prop', async () => {
+    const user = userEvent.setup();
+    render(<LoginForm redirectTo="/secured-app-home" />);
+
+    await user.type(screen.getByLabelText('Username/Email'), 'alice@test.com');
+    await user.type(screen.getByLabelText('Password'), 'p4ss');
+    await user.click(screen.getByRole('button', { name: 'Login' }));
+
+    expect(handleLogin).toHaveBeenCalledWith(
+      { usernameOrEmail: 'alice@test.com', password: 'p4ss' },
+      '/secured-app-home',
+    );
+  });
+
+  it('omits redirectTo from the controller call when no prop is set', async () => {
+    const user = userEvent.setup();
+    render(<LoginForm />);
+
+    await user.type(screen.getByLabelText('Username/Email'), 'bob@test.com');
+    await user.type(screen.getByLabelText('Password'), 'pass');
+    await user.click(screen.getByRole('button', { name: 'Login' }));
+
+    expect(handleLogin).toHaveBeenCalledWith(
+      { usernameOrEmail: 'bob@test.com', password: 'pass' },
+      undefined,
+    );
   });
 });

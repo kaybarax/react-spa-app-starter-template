@@ -9,7 +9,11 @@ import React from 'react';
 import { isEmptyString } from '../../util/util';
 import { handleLogin } from '../../controllers/login-controller';
 
-export default function LoginForm() {
+interface LoginFormProps {
+  redirectTo?: string;
+}
+
+export default function LoginForm({ redirectTo }: LoginFormProps) {
   const [usernameOrEmail, setUsernameOrEmail] = React.useState('');
   const [password, setPassword] = React.useState('');
   const [submitPressed, setSubmitPressed] = React.useState(false);
@@ -23,7 +27,7 @@ export default function LoginForm() {
     if (isEmptyString(usernameOrEmail) || isEmptyString(password)) {
       return;
     }
-    handleLogin({ usernameOrEmail, password });
+    handleLogin({ usernameOrEmail, password }, redirectTo);
   };
 
   return (
