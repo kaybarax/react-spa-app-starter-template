@@ -6,8 +6,16 @@
  */
 
 import React from 'react';
+import { RouteStatus } from './shared-components-and-modules/route-status';
+
 const FallBackPage: React.FC = () => {
-  return <h3>Something went wrong.</h3>;
+  return (
+    <RouteStatus
+      status="error"
+      title="Something went wrong"
+      message="An unexpected error occurred. Please try again."
+    />
+  );
 };
 
 export default FallBackPage;
