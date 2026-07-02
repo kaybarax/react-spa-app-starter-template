@@ -29,9 +29,10 @@ export const useAuthStore = create<AuthState>()(
         set({ isAuthenticated });
         return isAuthenticated;
       },
-      login: () => {
+      login: (redirectTo?: string) => {
         set({ isAuthenticated: true });
-        appNavigation.navigateTo(AppRoutes.SECURED_HOME);
+        const destination = redirectTo || AppRoutes.SECURED_HOME;
+        appNavigation.navigateTo(destination);
       },
       logout: () => {
         // Clear user data and all persisted working state
@@ -68,8 +69,8 @@ export class AuthStore {
     return useAuthStore.getState().checkAuthentication();
   }
 
-  handleLogin(): void {
-    useAuthStore.getState().login();
+  handleLogin(redirectTo?: string): void {
+    useAuthStore.getState().login(redirectTo);
   }
 
   handleLogout(): void {

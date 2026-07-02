@@ -45,7 +45,7 @@ export function handleSignUp(user: User, onSignUpSuccess?: () => void): void {
   };
 }
 
-export function handleLogin(credentials: LoginCredentials): void {
+export function handleLogin(credentials: LoginCredentials, redirectTo?: string): void {
   const db = window.db; //get db;
   if (!db) {
     console.error('Database not initialized');
@@ -78,7 +78,7 @@ export function handleLogin(credentials: LoginCredentials): void {
     useAppStore.setState({ user: { ...user } });
     notificationCallback('succ', 'Login success');
     //to allow notification display before navigating away
-    setTimeout(() => authStore.handleLogin(), 1500);
+    setTimeout(() => authStore.handleLogin(redirectTo), 1500);
   };
 }
 

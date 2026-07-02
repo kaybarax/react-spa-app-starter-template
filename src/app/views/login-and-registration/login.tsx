@@ -6,6 +6,7 @@
  */
 
 import React from 'react';
+import { useLocation } from 'react-router-dom';
 import { TITLE } from '../../app-config';
 import { LOGIN_PAGE_ACTIONS } from '../../stores/actions-and-stores-data';
 import '../../theme/login-styles.scss';
@@ -15,6 +16,9 @@ import SignUpForm from './sign-up-form';
 import { ResetPasswordForm } from './reset-password-form';
 
 export default function Login() {
+  const location = useLocation();
+  const from = (location.state as { from?: { pathname: string; search?: string } })?.from;
+  const redirectTo = from ? from.pathname + (from.search || '') : undefined;
   const pageAction = useLoginStore(state => state.pageAction);
 
   const showLoginForm = () => {
@@ -64,7 +68,7 @@ export default function Login() {
         {showLogin && (
           <div className={'flex-row-container'}>
             <div className={'flex-container-child-item center-align-content'}>
-              <LoginForm />
+              <LoginForm redirectTo={redirectTo} />
             </div>
           </div>
         )}
