@@ -6,7 +6,13 @@
  */
 
 import { create } from 'zustand';
-import { NotificationAlert, NotificationType } from './notification-utils';
+import {
+  NotificationAlert,
+  NotificationType,
+  Severity,
+  normalizeNotificationType,
+  buildNotificationKey,
+} from './notification-utils';
 
 export const notificationAlertProps: NotificationAlert = {
   alert: false,
@@ -17,7 +23,10 @@ export const notificationAlertProps: NotificationAlert = {
 };
 
 export interface NotificationState extends NotificationAlert {
+  severity?: Severity;
+  notificationKey?: string;
   dismiss: () => void;
+  clear: () => void;
 }
 
 /**
@@ -27,40 +36,61 @@ export interface NotificationState extends NotificationAlert {
  */
 export const useNotificationStore = create<NotificationState>(set => ({
   ...notificationAlertProps,
-  dismiss: () => set({ alert: false, message: null }),
+  severity: undefined,
+  notificationKey: undefined,
+  dismiss: () => set({ alert: false, message: null, severity: undefined, notificationKey: undefined }),
+  clear: () => set({ alert: false, message: null, type: null, severity: undefined, notificationKey: undefined }),
 }));
 
 let dismissTimer: number | undefined;
+
+/**
+ * Dismisses the current notification and clears the dismiss timer.
+ * Used internally and can be called directly for explicit dismissal.
+ */
+export function dismissNotification(): void {
+  window.clearTimeout(dismissTimer);
+  dismissTimer = undefined;
+  useNotificationStore.getState().dismiss();
+}
+
+/**
+ * Clears all notification state immediately.
+ */
+export function clearNotifications(): void {
+  window.clearTimeout(dismissTimer);
+  dismissTimer = undefined;
+  useNotificationStore.getState().clear();
+}
 
 export function notificationCallback(
   notificationType: NotificationType,
   message: string,
   position: 'top' | 'bottom' = 'top',
   duration = 3500,
+  severity?: Severity,
 ): void {
-  let typeOfNotification: NotificationType = 'info'; //default to this
+  const typeOfNotification = normalizeNotificationType(notificationType);
+  const safeMessage = message || 'You have not specified a message';
+  const key = buildNotificationKey(typeOfNotification, safeMessage, severity);
 
-  if (
-    notificationType === 'err' ||
-    notificationType === 'error' ||
-    notificationType === 'failure' ||
-    notificationType === 'fail'
-  ) {
-    typeOfNotification = 'error';
-  }
-  if (notificationType === 'succ' || notificationType === 'success') {
-    typeOfNotification = 'success';
-  }
-  if (notificationType === 'warn' || notificationType === 'warning') {
-    typeOfNotification = 'warning';
+  const currentState = useNotificationStore.getState();
+
+  // Deduplication: if the same notification is already showing, reset its timer instead of re-triggering
+  if (currentState.alert && currentState.notificationKey === key) {
+    window.clearTimeout(dismissTimer);
+    dismissTimer = window.setTimeout(() => useNotificationStore.getState().dismiss(), duration);
+    return;
   }
 
   useNotificationStore.setState({
     alert: true,
     type: typeOfNotification,
-    message: message || 'You have not specified a message',
+    message: safeMessage,
     position,
     duration,
+    severity,
+    notificationKey: key,
   });
 
   window.clearTimeout(dismissTimer);

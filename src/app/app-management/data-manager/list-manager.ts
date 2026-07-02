@@ -5,6 +5,9 @@
  * LinkedIn @_ https://linkedin.com/in/kevin-barasa
  */
 
+import { notificationCallback } from '../../shared-components-and-modules/notification-center/notifications-controller';
+import type { Severity } from '../../shared-components-and-modules/notification-center/notification-utils';
+
 interface Link {
   site: string;
   link: string;
@@ -77,3 +80,27 @@ export const SOs_and_Credits_List: CreditPerson[] = [
     ],
   },
 ];
+
+/**
+ * Dispatches a notification when a list-manager action completes.
+ * Provides resiliency by showing user-facing feedback without throwing.
+ */
+export function notifyListAction(
+  action: 'load' | 'update' | 'delete',
+  listName: string,
+  severity?: Severity,
+): void {
+  const messages: Record<string, string> = {
+    load: `List "${listName}" loaded successfully`,
+    update: `List "${listName}" updated successfully`,
+    delete: `List "${listName}" deleted successfully`,
+  };
+  notificationCallback('success', messages[action] ?? `Action on "${listName}" completed`, 'top', 3000, severity);
+}
+
+/**
+ * Dispatches an error notification for a list action failure.
+ */
+export function notifyListError(action: string, listName: string, errorMessage: string): void {
+  notificationCallback('error', `Failed to ${action} list "${listName}": ${errorMessage}`, 'top', 5000, 'critical');
+}
