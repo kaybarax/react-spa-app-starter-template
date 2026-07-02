@@ -28,6 +28,10 @@ Get up and running quickly, with building your React JS SPA web application.
 
 And you are good to go!
 
+## Local Validation
+
+Before opening a PR, run `yarn build` to ensure the project builds successfully.
+
 ### Scripts
 
 | Script               | What it does                                  |
