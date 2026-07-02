@@ -18,10 +18,25 @@ export type NotificationType =
   | 'info'
   | null;
 
+export type NotificationSeverity = 'critical' | 'error' | 'warning' | 'info';
+
+export type NotificationFilter = 'all' | 'unread';
+
 export interface NotificationAlert {
   alert?: boolean;
   message?: string | null;
   type?: NotificationType;
+  duration?: number;
+  position?: 'top' | 'bottom';
+}
+
+export interface NotificationItem {
+  id: string;
+  message: string;
+  severity: NotificationSeverity;
+  type?: NotificationType;
+  read: boolean;
+  timestamp: number;
   duration?: number;
   position?: 'top' | 'bottom';
 }
