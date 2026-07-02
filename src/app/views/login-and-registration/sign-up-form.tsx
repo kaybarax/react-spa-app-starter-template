@@ -6,7 +6,7 @@
  */
 
 import React from 'react';
-import { handleSignUp } from '../../controllers/login-controller';
+import { handleSignUp, isValidEmail } from '../../controllers/login-controller';
 import { isEmptyString } from '../../util/util';
 import { User } from '../../app-management/data-manager/models-manager';
 
@@ -21,6 +21,8 @@ export default function SignUpForm({ onSignUpSuccess }: SignUpFormProps) {
   const [confirmPassword, setConfirmPassword] = React.useState('');
   const [submitPressed, setSubmitPressed] = React.useState(false);
 
+  const looksLikeEmail = usernameOrEmail.includes('@');
+  const invalidEmail = submitPressed && looksLikeEmail && !isValidEmail(usernameOrEmail);
   const nameMissing = submitPressed && isEmptyString(name);
   const usernameOrEmailMissing = submitPressed && isEmptyString(usernameOrEmail);
   const passwordMissing = submitPressed && isEmptyString(password);
@@ -32,7 +34,8 @@ export default function SignUpForm({ onSignUpSuccess }: SignUpFormProps) {
     !isEmptyString(usernameOrEmail) &&
     !isEmptyString(password) &&
     !isEmptyString(confirmPassword) &&
-    password === confirmPassword;
+    password === confirmPassword &&
+    !(usernameOrEmail.includes('@') && !isValidEmail(usernameOrEmail));
 
   const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -72,13 +75,14 @@ export default function SignUpForm({ onSignUpSuccess }: SignUpFormProps) {
         <div className="control">
           <input
             id="username-or-email"
-            className={`input ${usernameOrEmailMissing ? 'is-danger' : ''}`}
+            className={`input ${usernameOrEmailMissing || invalidEmail ? 'is-danger' : ''}`}
             type="text"
             value={usernameOrEmail}
             onChange={e => setUsernameOrEmail(e.target.value)}
           />
         </div>
         {usernameOrEmailMissing && <p className="help is-danger">* This field is required.</p>}
+        {invalidEmail && <p className="help is-danger">* Please enter a valid email address.</p>}
       </div>
 
       <div className="field">

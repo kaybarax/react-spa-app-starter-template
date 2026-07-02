@@ -11,6 +11,11 @@ import { User } from '../app-management/data-manager/models-manager';
 import { useAppStore } from '../stores';
 import authStore from '../stores/auth-store';
 
+export function isValidEmail(value: string): boolean {
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  return emailRegex.test(value);
+}
+
 export interface LoginCredentials {
   usernameOrEmail: string;
   password: string;

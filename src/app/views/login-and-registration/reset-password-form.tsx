@@ -6,13 +6,22 @@
  */
 
 import React from 'react';
-import { handleResetPassword } from '../../controllers/login-controller';
+import { handleResetPassword, isValidEmail } from '../../controllers/login-controller';
+import { isEmptyString } from '../../util/util';
 
 export function ResetPasswordForm() {
   const [usernameOrEmail, setUsernameOrEmail] = React.useState('');
+  const [submitPressed, setSubmitPressed] = React.useState(false);
+
+  const emailMissing = submitPressed && isEmptyString(usernameOrEmail);
+  const invalidEmail = submitPressed && !isEmptyString(usernameOrEmail) && !isValidEmail(usernameOrEmail);
 
   const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    setSubmitPressed(true);
+    if (isEmptyString(usernameOrEmail) || !isValidEmail(usernameOrEmail)) {
+      return;
+    }
     handleResetPassword();
   };
 
@@ -27,12 +36,14 @@ export function ResetPasswordForm() {
         <div className="control">
           <input
             id="reset-username-or-email"
-            className="input"
+            className={`input ${emailMissing || invalidEmail ? 'is-danger' : ''}`}
             type="email"
             value={usernameOrEmail}
             onChange={e => setUsernameOrEmail(e.target.value)}
           />
         </div>
+        {emailMissing && <p className="help is-danger">* This field is required.</p>}
+        {invalidEmail && <p className="help is-danger">* Please enter a valid email address.</p>}
       </div>
 
       <div className="field">
