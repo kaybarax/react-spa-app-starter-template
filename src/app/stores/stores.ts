@@ -33,6 +33,12 @@ export interface SecuredAppState {
   clicksCount: number;
 }
 
+export interface UserPreferencesState {
+  themeMode: 'light' | 'dark';
+  density: 'comfortable' | 'compact';
+  reducedMotion: boolean;
+}
+
 // Create stores with initial states
 export const useAppStore = createStore<AppState>('appStore', {
   user: null,
@@ -80,6 +86,12 @@ export const useSecuredAppStore = createStore<SecuredAppState>('securedAppStore'
   clicksCount: 0,
 });
 
+export const useUserPreferencesStore = createStore<UserPreferencesState>('userPreferences', {
+  themeMode: 'light',
+  density: 'comfortable',
+  reducedMotion: false,
+});
+
 // Function to reset all stores
 export function resetAllStores() {
   useAppStore.getState().reset();
@@ -89,6 +101,7 @@ export function resetAllStores() {
   usePage3ExampleStore.getState().reset();
   usePage4ExampleStore.getState().reset();
   useSecuredAppStore.getState().reset();
+  useUserPreferencesStore.getState().reset();
 }
 
 // Function to clear all persisted stores from localStorage

@@ -2,6 +2,77 @@
 //sd - self described
 //@authored by Kevin -- Twitter @_ https://x.com/kaybarax, Github @_ https://github.com/kaybarax, LinkedIn @_ https://linkedin.com/in/kevin-barasa
 
+// ---------------------------------------------------------------
+// User preferences — theme, density & reduced-motion support
+// The controller toggles pref-theme-*, pref-density-* and
+// pref-reduced-motion classes on <html>.
+// ---------------------------------------------------------------
+
+/* Default (light) theme custom properties */
+:root,
+.pref-theme-light {
+  --pref-panel-bg: #fff;
+  --pref-panel-text: #333;
+  --pref-panel-border: #ddd;
+  --pref-bg: #fff;
+  --pref-text: #222;
+  --pref-link: #485fc7;
+  --pref-border: #dbdbdb;
+}
+
+.pref-theme-dark {
+  --pref-panel-bg: #1e1e1e;
+  --pref-panel-text: #e0e0e0;
+  --pref-panel-border: #444;
+  --pref-bg: #121212;
+  --pref-text: #e0e0e0;
+  --pref-link: #8ab4f8;
+  --pref-border: #444;
+}
+
+/* Apply theme colours to body and common elements */
+.pref-theme-dark body,
+.pref-theme-dark {
+  background-color: var(--pref-bg);
+  color: var(--pref-text);
+}
+
+.pref-theme-dark a {
+  color: var(--pref-link);
+}
+
+/* Density: compact mode reduces spacing */
+.pref-density-compact {
+  --pref-space-xs: 0.15rem;
+  --pref-space-sm: 0.25rem;
+  --pref-space-md: 0.4rem;
+  --pref-space-lg: 0.6rem;
+}
+
+.pref-density-compact .button,
+.pref-density-compact .box,
+.pref-density-compact .card,
+.pref-density-compact .navbar-item,
+.pref-density-compact .panel-block {
+  padding-top: var(--pref-space-sm);
+  padding-bottom: var(--pref-space-sm);
+}
+
+.pref-density-compact .title,
+.pref-density-compact .subtitle {
+  margin-bottom: var(--pref-space-sm) !important;
+}
+
+/* Reduced motion — disable animations/transitions */
+.pref-reduced-motion *,
+.pref-reduced-motion *::before,
+.pref-reduced-motion *::after {
+  animation-duration: 0s !important;
+  animation-iteration-count: 1 !important;
+  transition-duration: 0s !important;
+  scroll-behavior: auto !important;
+}
+
 //containers
 //start flex containers
 .flex-row-container {

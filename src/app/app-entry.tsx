@@ -12,6 +12,8 @@ import { AppBaseRoutingComposition } from './routing-and-navigation/routing-comp
 import LoadingRouteFallback from './loading-route-fallback';
 import SafeComponentWrapper from './safe-component-wrapper';
 import AppNotificationAlert from './shared-components-and-modules/notification-center/app-notification-alert';
+import UserPreferencesPanel from './shared-components-and-modules/user-preferences/user-preferences-panel';
+import { useApplyPreferences } from './controllers/preferences-controller';
 
 // TanStack Query client for server data fetching and caching. The app runs
 // fully serverless; this is the blessed option for whenever a server comes
@@ -19,6 +21,9 @@ import AppNotificationAlert from './shared-components-and-modules/notification-c
 const queryClient = new QueryClient();
 
 export default function AppEntry() {
+  // Apply persisted user preferences (theme, density, reduced motion)
+  useApplyPreferences();
+
   return (
     <QueryClientProvider client={queryClient}>
       <Router>
@@ -29,6 +34,7 @@ export default function AppEntry() {
         </React.Suspense>
       </Router>
       <AppNotificationAlert />
+      <UserPreferencesPanel />
     </QueryClientProvider>
   );
 }
