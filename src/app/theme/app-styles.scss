@@ -142,3 +142,115 @@
     bottom: 1rem;
   }
 }
+
+// notification centre panel toggle
+.app-notification-centre-toggle {
+  position: fixed;
+  top: 0.5rem;
+  right: 0.5rem;
+  z-index: 1001;
+  border-radius: 50%;
+  width: 2.5rem;
+  height: 2.5rem;
+  padding: 0;
+  font-size: 1.2rem;
+  line-height: 1;
+}
+
+// notification centre panel
+.app-notification-centre {
+  position: fixed;
+  top: 3.5rem;
+  right: 0.5rem;
+  z-index: 1001;
+  width: 380px;
+  max-width: 90vw;
+  max-height: calc(100vh - 4.5rem);
+  background: #fff;
+  border: 1px solid #dbdbdb;
+  border-radius: 6px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+
+  .app-notification-centre-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.75rem;
+    border-bottom: 1px solid #f0f0f0;
+
+    .app-notification-centre-title {
+      font-weight: 600;
+      font-size: 1rem;
+    }
+  }
+
+  .app-notification-centre-actions {
+    display: flex;
+    gap: 0.5rem;
+    padding: 0.5rem 0.75rem;
+    border-bottom: 1px solid #f0f0f0;
+  }
+
+  .app-notification-centre-filters {
+    padding: 0.5rem 0.75rem;
+    border-bottom: 1px solid #f0f0f0;
+
+    .field {
+      margin-bottom: 0.25rem;
+
+      &:last-child {
+        margin-bottom: 0;
+      }
+    }
+  }
+
+  .app-notification-centre-list {
+    flex: 1;
+    overflow-y: auto;
+    padding: 0.5rem 0.75rem;
+  }
+
+  .app-notification-centre-group {
+    margin-bottom: 0.75rem;
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+
+    .app-notification-centre-group-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 0.35rem;
+    }
+  }
+
+  .app-notification-centre-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.4rem 0.5rem;
+    border-radius: 4px;
+    margin-bottom: 0.25rem;
+    font-size: 0.875rem;
+
+    &.is-unread {
+      background: #f5f8ff;
+    }
+
+    .app-notification-centre-item-message {
+      flex: 1;
+      word-break: break-word;
+    }
+
+    .app-notification-centre-item-actions {
+      display: flex;
+      align-items: center;
+      gap: 0.25rem;
+      flex-shrink: 0;
+    }
+  }
+}
