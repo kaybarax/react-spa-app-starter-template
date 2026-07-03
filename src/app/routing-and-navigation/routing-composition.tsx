@@ -10,6 +10,7 @@ import { Route, Routes } from 'react-router-dom';
 import {
   _404_VIEW,
   APP_DEV_MOCKS_VIEW_ROUTE,
+  NOTIFICATION_TEST_VIEW_ROUTE,
   DEFAULT_VIEW_ROUTE,
   LOGIN_AND_REGISTRATION_VIEW_ROUTE,
   PAGE2EXAMPLE_VIEW_ROUTE,
@@ -56,6 +57,7 @@ export function AppBaseRoutingComposition(): JSX.Element {
         }
       />
       <Route path={APP_DEV_MOCKS_VIEW_ROUTE.path} element={<APP_DEV_MOCKS_VIEW_ROUTE.component />} />
+      <Route path={NOTIFICATION_TEST_VIEW_ROUTE.path} element={<NOTIFICATION_TEST_VIEW_ROUTE.component />} />
       <Route path="*" element={<_404_VIEW.component />} />
     </Routes>
   );

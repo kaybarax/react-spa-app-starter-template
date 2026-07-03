@@ -59,6 +59,11 @@ export const _404_VIEW = {
   path: NotFoundPath,
 };
 
+export const NOTIFICATION_TEST_VIEW_ROUTE = {
+  component: React.lazy(() => import('../views/notification-test-view')),
+  path: '/notification-test',
+};
+
 export const APP_DEV_MOCKS_VIEW_ROUTE = {
   component: React.lazy(() => import('../../app-dev-scratch-pad/app-dev-scratch-pad')),
   path: AppDevScratchPadPath,
